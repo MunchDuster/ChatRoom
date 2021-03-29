@@ -1,49 +1,95 @@
-.system{
-	background-color: #b0b0ff;
-	margin-left: 50%;
-	transform: translateX(-50%);
+.system {
+  background-color: #b0b0ff;
+  margin-left: 50%;
+  transform: translateX(-50%);
 }
-.msgBox{
-	font-size: 20px;			
-	width : max-content;
-	min-width: 200px;
-	border: 1px solid #58c27b;
-	border-radius: 3px;
-	word-wrap: break-word;
-	margin-top: 2px;
+.msgBox {
+  font-size: 20px;
+  width: max-content;
+  min-width: 200px;
+  border: 1px solid #58c27b;
+  border-radius: 3px;
+  word-wrap: break-word;
+  margin-top: 2px;
 }
-.my{
-	background-color: #fff788;	
+.ding {
+  position: fixed;
+  top: 0px;
+  right: 50%;
+  transform: translateX(50%);
+  background-color: #58c27b;
+  width: max-content;
+  min-width: 150px;
+  text-align: center;
+  padding: 10px;
+  max-width: 200px;
 }
-.other{
-	background-color: #88FF88;
-	margin-left:auto;
+.coverdiv {
+  position: fixed;
+  right: 0px;
+  left: 0px;
+  top: 0px;
+  bottom: 0px;
+  filter: blur(2px);
 }
-body{
-	font-family: 'Roboto';
-	margin: 0px;
+input {
+  margin: 2px;
+  border: 1px solid black;
+  outline: none;
 }
-.timediv{
-	font-size: x-small;
-	text-align-last:right;
+.joinbtn {
+  border: 0px;
+  margin: 2px;
+  background-color: #61f743;
+  width: 100px;
+  height: 30px;
+  font-size: large;
 }
-.subButton{
-	background-color: rgb(192, 192, 192);
-	padding: 2px;
-	margin: 3px;
-	border: none;
-	border-radius: 100px;
-	filter: invert(100%);
+.my {
+  background-color: #fff788;
 }
-.input{
-	background-color: #a7a7a7;
-	width: max-content;
-	min-width: 200px;
-	max-width: calc(90% - 25px);
-	min-height: 30px; 
-	height: max-content;
-	outline: none;
-	font-size: 20px;
-	
-	margin-top: 3px;
+.other {
+  background-color: #88ff88;
+  margin-left: auto;
+}
+body {
+  font-family: "Roboto";
+  margin: 0px;
+}
+.timediv {
+  font-size: x-small;
+  text-align-last: right;
+}
+.subButton {
+  background-color: rgb(192, 192, 192);
+  padding: 2px;
+  margin: 3px;
+  border: none;
+  border-radius: 100px;
+  filter: invert(100%);
+}
+.input {
+  width: 80%;
+  min-height: 30px;
+  height: max-content;
+  outline: none;
+  font-size: 20px;
+
+  margin: 3px;
+}
+.joindiv {
+  width: max-content;
+  padding-bottom: 30px;
+  padding-right: 10px;
+  padding-left: 10px;
+
+  text-align: center;
+  height: max-content;
+  background-color: aqua;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  border-radius: 9px;
+
+  transform: translate(-50%, -50%);
 }
