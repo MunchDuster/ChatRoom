@@ -15,6 +15,7 @@ const passenter = document.getElementById("pas");
 const remmebox = document.getElementById("remme");
 const joindiv = document.getElementsByClassName("joindiv")[0];
 const coverdivs = Array.from(document.getElementsByClassName("coverdiv"));
+
 if (localStorage.getItem("remme")) {
   const split = localStorage.getItem("remme").split("$$");
   userName = split[0];
@@ -22,11 +23,12 @@ if (localStorage.getItem("remme")) {
   passenter.value = split[1];
   remmebox.checked = true;
 }
+
+
 function txtinput(inputobj) {
   if (inputobj.inputType == "insertText" && inputobj.data == null)
     sendMsg(trim(textBox.innerText));
 }
-
 function trim(msg) {
   var splits = msg.split("\n");
   console.log(msg);
@@ -46,6 +48,8 @@ function trim(msg) {
   }
   return newmsg;
 }
+
+//Join button pressed
 document.getElementById("goe").addEventListener("click", () => {
   if (passenter.value == passwrd) {
     userName = nameenter.value;
@@ -61,7 +65,9 @@ document.getElementById("goe").addEventListener("click", () => {
       });
       ele.parentNode.removeChild(ele);
     });
-    joindiv.parentNode.removeChild(joindiv);
+	  joindiv.parentNode.removeChild(joindiv);
+	  socket.emit("entered room", userName, getDateTime());
+	  
   } else {
     ding("wrong password");
   }

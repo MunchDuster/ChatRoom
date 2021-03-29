@@ -1,19 +1,29 @@
-const password = '';
+//CONTROL VARS
+const password = 'fishy';
+const PORT = process.env.PORT;
+
+//REQUIREMENTS
 const express = require("express");
 const app = express();
 const http = require("http").createServer(app);
 const io = require("socket.io")(http);
 const { joinUser, removeUser } = require("./users");
 
+//CLIENT DATA
 app.use(express.static(__dirname + "/Client"));
 app.get("/", function (req, res) {
   res.sendFile(__dirname + "/index.html");
 });
-var msgType = {
+
+//OTHER 
+const msgType = {
   USER: 0,
   SYSTEM: 1,
 };
 var msgs = [];
+
+
+//FUNCTIONS
 function addMsg(msg, msgType, dateTime, user) {
   var obj = {
     msg: msg,
@@ -43,6 +53,8 @@ function getDateTime(date_ob) {
     year: dert.getFullYear(),
   };
 }
+
+//HANDLE REQUESTS
 io.on("connection", function (socket) {
 	console.log("connected");
 	var username = '';
@@ -77,6 +89,7 @@ io.on("connection", function (socket) {
   });
 });
 
-http.listen(8080, () => {
-  console.log("listening on 8080");
+//SERVER LISTEN
+http.listen(PORT, () => {
+  console.log("listening on " + PORT);
 });
