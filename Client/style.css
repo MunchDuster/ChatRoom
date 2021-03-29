@@ -1,0 +1,49 @@
+.system{
+	background-color: #b0b0ff;
+	margin-left: 50%;
+	transform: translateX(-50%);
+}
+.msgBox{
+	font-size: 20px;			
+	width : max-content;
+	min-width: 200px;
+	border: 1px solid #58c27b;
+	border-radius: 3px;
+	word-wrap: break-word;
+	margin-top: 2px;
+}
+.my{
+	background-color: #fff788;	
+}
+.other{
+	background-color: #88FF88;
+	margin-left:auto;
+}
+body{
+	font-family: 'Roboto';
+	margin: 0px;
+}
+.timediv{
+	font-size: x-small;
+	text-align-last:right;
+}
+.subButton{
+	background-color: rgb(192, 192, 192);
+	padding: 2px;
+	margin: 3px;
+	border: none;
+	border-radius: 100px;
+	filter: invert(100%);
+}
+.input{
+	background-color: #a7a7a7;
+	width: max-content;
+	min-width: 200px;
+	max-width: calc(90% - 25px);
+	min-height: 30px; 
+	height: max-content;
+	outline: none;
+	font-size: 20px;
+	
+	margin-top: 3px;
+}
