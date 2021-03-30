@@ -8,7 +8,6 @@ var userName;
 var passwrd = null;
 const container = document.getElementById("messages");
 const textBox = document.getElementById("m");
-const curHolder = document.getElementById("stuff");
 
 const nameenter = document.getElementById("nam");
 const passenter = document.getElementById("pas");
