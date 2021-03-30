@@ -11,6 +11,8 @@
   border-radius: 3px;
   word-wrap: break-word;
   margin-top: 2px;
+  max-width: 75%;
+  
 }
 .ding {
   position: fixed;
@@ -30,7 +32,7 @@
   left: 0px;
   top: 0px;
   bottom: 0px;
-  filter: blur(2px);
+  filter: blur(5px);
 }
 input {
   margin: 2px;
@@ -47,10 +49,13 @@ input {
 }
 .my {
   background-color: #fff788;
+  margin-left: 25%;
 }
 .other {
   background-color: #88ff88;
   margin-left: auto;
+  margin-right: 25%;
+  
 }
 body {
   font-family: "Roboto";
