@@ -1,5 +1,5 @@
 //CONTROL VARS
-const password = 'fishy';
+const password = "fishy";
 const PORT = process.env.PORT || 8080;
 
 //REQUIREMENTS
@@ -15,13 +15,12 @@ app.get("/", function (req, res) {
   res.sendFile(__dirname + "/index.html");
 });
 
-//OTHER 
+//OTHER
 const msgType = {
   USER: 0,
   SYSTEM: 1,
 };
 var msgs = [];
-
 
 //FUNCTIONS
 function addMsg(msg, msgType, dateTime, user) {
@@ -43,7 +42,7 @@ function addMsg(msg, msgType, dateTime, user) {
   }
   return obj;
 }
-function getDateTime(date_ob) {
+function getDateTime() {
   var dert = new Date();
   return {
     minute: dert.getMinutes(),
@@ -56,28 +55,28 @@ function getDateTime(date_ob) {
 
 //HANDLE REQUESTS
 io.on("connection", function (socket) {
-	console.log("connected");
-	var username = '';
-	socket.emit('room pass', password);
-	socket.on("entered room", function (userName, dateTime) {
-		username = userName;
-		const joinedMessage = addMsg(
-			userName + " connected",
-			msgType.SYSTEM,
-			dateTime
-		);
-		console.log(joinedMessage);
-		socket.emit("ketchup", msgs);
-		socket.broadcast.emit("receive chat", joinedMessage);
-	});
-	socket.on("changed name", function (newname) {
-		msgs.forEach();
-	});
-	socket.on("chat msg", function (msg, dateTime, user) {
-		var msg = addMsg(msg, msgType.USER, dateTime, user);
-    	socket.broadcast.emit("receive chat", msg);
+  console.log("connected");
+  var username = "";
+  socket.emit("room pass", password);
+  socket.on("entered room", function (userName, dateTime) {
+    username = userName;
+    const joinedMessage = addMsg(
+      userName + " connected",
+      msgType.SYSTEM,
+      dateTime
+    );
+    console.log(joinedMessage);
+    socket.emit("ketchup", msgs);
+    socket.broadcast.emit("receive chat", joinedMessage);
   });
-	socket.on("disconnect", function () {
+  socket.on("changed name", function (newname) {
+    msgs.forEach();
+  });
+  socket.on("chat msg", function (msg, dateTime, user) {
+    var msg = addMsg(msg, msgType.USER, dateTime, user);
+    socket.broadcast.emit("receive chat", msg);
+  });
+  socket.on("disconnect", function () {
     if (username != "") {
       const leftMessage = addMsg(
         username + " disconnected",

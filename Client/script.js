@@ -6,7 +6,7 @@ var msgType = {
 
 var userName;
 var passwrd = null;
-const container = document.getElementById("messages");
+const container = document.getElementsByClassName("messages")[0];
 const textBox = document.getElementById("m");
 
 const nameenter = document.getElementById("nam");
@@ -23,7 +23,38 @@ if (localStorage.getItem("remme")) {
   remmebox.checked = true;
 }
 
+//Join button pressed
+document.getElementById("goe").addEventListener("click", () => {
+  if (passenter.value == passwrd) {
+    onJoined();
+  } else {
+    ding("wrong password");
+  }
+});
 
+function openSettings() {}
+
+var curdings = [];
+
+//FUNCTIONS
+function onJoined() {
+  userName = nameenter.value;
+
+  if (remmebox.checked) {
+    localStorage.setItem("remme", nameenter.value + "$$" + passenter.value);
+  } else {
+    localStorage.removeItem("remme");
+  }
+  coverdivs.forEach((ele) => {
+    Array.from(ele.children).forEach((child) => {
+      document.body.insertBefore(child, document.body.lastChild);
+    });
+    ele.parentNode.removeChild(ele);
+  });
+
+  joindiv.parentNode.removeChild(joindiv);
+  socket.emit("entered room", userName, getDateTime());
+}
 function txtinput(inputobj) {
   if (inputobj.inputType == "insertText" && inputobj.data == null)
     sendMsg(trim(textBox.innerText));
@@ -47,32 +78,6 @@ function trim(msg) {
   }
   return newmsg;
 }
-
-//Join button pressed
-document.getElementById("goe").addEventListener("click", () => {
-  if (passenter.value == passwrd) {
-    userName = nameenter.value;
-
-    if (remmebox.checked) {
-      localStorage.setItem("remme", nameenter.value + "$$" + passenter.value);
-    } else {
-      localStorage.removeItem("remme");
-    }
-    coverdivs.forEach((ele) => {
-      Array.from(ele.children).forEach((child) => {
-        document.body.appendChild(child);
-      });
-      ele.parentNode.removeChild(ele);
-    });
-	  joindiv.parentNode.removeChild(joindiv);
-	  socket.emit("entered room", userName, getDateTime());
-	  
-  } else {
-    ding("wrong password");
-  }
-});
-
-var curdings = [];
 function ding(msg, cancelmsg) {
   for (var i = 0; i < curdings.length; i++) {
     if (curdings[i].cancelmsg == msg) {
@@ -179,7 +184,7 @@ function makeSystemMessage(msg, dateTime) {
   newDiv.appendChild(timediv);
   addOnTop(newDiv);
 }
-
+//SOCKET CONNECTION STUFF
 socket.on("room pass", function (pass) {
   getPassword(pass);
 });

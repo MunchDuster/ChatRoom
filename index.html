@@ -7,20 +7,19 @@
     <link href="https://fonts.googleapis.com/css2?family=Nova+Square&display=swap" rel="stylesheet">
 <head>
 <body>
+
  <div class="coverdiv">
-<div id="messages"></div>
-	<div style="text-align: center;font-family: 'Nova Square';font-size:x-large;">MER LITTLE NODE CHAT</div>
-	<div style=" width: 100%; height: max-content; background-color: rgb(197, 197, 197) ">
-		<div style="width: 80%; ">
-			<div style="background-color: white; margin:5px; width: 80%; padding: 2px 10px; border-radius: 20px;">
-				<div contenteditable="true" oninput="txtinput(event);" class="input" id="m"></div>
-			</div>
-		</div>
+    <div class="background"></div>
+    <div style="background-color: rgb(68, 68, 68);">
+	<div class="title">MER LITTLE NODE CHAT</div>
+    <img src="gear.png" class="settingsButton" onclick="openSettings();">
+	<div class="outerInput">	
+        <div contenteditable="true" oninput="txtinput(event);" class="innerInput" id="m"></div>
+        <button onclick="sendMsg(trim(textBox.innerText));" class="subButton">send</button>
 	</div>
+    </div>
+    <div class="messages"></div>
 	</div>
-   
-	
-	
 </div>
 <div class="coverdiv"></div>
 	<div class="joindiv">
