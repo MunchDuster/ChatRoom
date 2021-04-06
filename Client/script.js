@@ -29,7 +29,7 @@ if (localStorage.getItem("remme")) {
 }
 
 //Join button pressed
-document.getElementById("goe").addEventListener("click", () => {
+document.getElementById("goe").addEventListener("click", function () {
   if (passenter.value == passwrd) {
     onJoined();
   } else {
