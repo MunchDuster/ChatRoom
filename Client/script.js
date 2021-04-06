@@ -4,6 +4,11 @@ var msgType = {
   SYSTEM: 1,
 };
 
+var fontsize = 20;
+var backgroundColor;
+var is24hour = false;
+var willFilter = true;
+
 var userName;
 var passwrd = null;
 const container = document.getElementsByClassName("messages")[0];
@@ -32,8 +37,6 @@ document.getElementById("goe").addEventListener("click", () => {
   }
 });
 
-function openSettings() {}
-
 var curdings = [];
 
 //FUNCTIONS
@@ -61,8 +64,6 @@ function txtinput(inputobj) {
 }
 function trim(msg) {
   var splits = msg.split("\n");
-  console.log(msg);
-  console.log(splits);
   var newmsg = "";
   for (var i = 0; i < splits.length; i++) {
     if (splits[i] == "") {
@@ -103,31 +104,61 @@ function ding(msg, cancelmsg) {
     curdings.splice(thisding.index, 1);
   }, 2000);
 }
+function readTime(istoday, hr, min, thshr, thsmin) {
+  if (istoday) {
+    const minutesPassed = (thshr - hr) * 60 + (thsmin - min);
+    if (minutesPassed < 1) return ",few seconds ago";
+    else if (minutesPassed < 30) return ", " + minutesPassed + " minutes ago";
+    else if (minutesPassed >= 30 && minutesPassed < 40)
+      return ",half an hour ago";
+    else if (minutesPassed < 60) return ",while ago";
+    else if (minutesPassed >= 60 && minutesPassed < 120) return "an hour ago ";
+    else return ",few hours ago";
+  } else {
+    hr = !is24hour && hr > 12 ? hr - 12 : hr;
+    return " at " + hr + ":" + ("0" + min).slice(-2);
+  }
+}
+const dayMonths = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 function showDateTime(date_ob) {
   // adjust 0 before single digit date
-  let date = ("0" + date_ob.day).slice(-2);
+  const day = ("0" + date_ob.day).slice(-2);
+  const month = ("0" + (date_ob.month + 1)).slice(-2);
+  const year = date_ob.year;
+  const hours = date_ob.hour;
+  const minutes = ("0" + date_ob.minute).slice(-2);
 
-  // current month
-  let month = ("0" + (date_ob.month + 1)).slice(-2);
+  const now = getDateTime();
 
-  // current year
-  let year = date_ob.year;
-  // current hours
-  let hours = date_ob.hour;
+  var dayOfYear = date_ob.day;
+  for (var i = 0; i < date_ob.month; i++) {
+    dayOfYear += dayMonths[i];
+  }
+  var thisDayOfYear = now.day;
+  for (var i = 0; i < now.month; i++) {
+    thisDayOfYear += dayMonths[i];
+  }
 
-  // current minutes
-  let minutes = date_ob.minute;
-  return (
-    year +
-    "-" +
-    month +
-    "-" +
-    date +
-    " " +
-    hours +
-    ":" +
-    ("0" + date_ob.minute).slice(-2)
-  );
+  if (dayOfYear == thisDayOfYear) {
+    return (
+      "Today " + readTime(true, hours, date_ob.minute, now.hour, now.minute)
+    );
+  } else if (dayOfYear == thisDayOfYear - 1) {
+    return (
+      "Yesterday " +
+      readTime(false, hours, date_ob.minute, now.hour, now.minute)
+    );
+  } else {
+    return (
+      year +
+      "-" +
+      month +
+      "-" +
+      day +
+      " " +
+      readTime(false, hours, date_ob.minute, now.hour, now.minute)
+    );
+  }
 }
 function getDateTime() {
   var dert = new Date();
@@ -160,30 +191,34 @@ function addOnTop(div) {
   div.style.top = 0;
   container.insertBefore(div, container.childNodes[0]);
 }
+var lastborder;
 function makeMessage(user, msg, dateTime) {
   var newDiv = document.createElement("div");
-  var addOn = "";
   newDiv.className = user == userName ? "msgBox my" : "msgBox other";
-  newDiv.innerText =
-    user == userName
-      ? user + "(You)" + addOn + ": " + msg
-      : user + addOn + ": " + msg;
-  var timediv = document.createElement("div");
-  timediv.innerText = showDateTime(dateTime);
-  timediv.className = "timediv";
-  newDiv.appendChild(timediv);
+
+  var namediv = document.createElement("div");
+  namediv.innerText = user == userName ? user + "(You)" : user;
+  namediv.innerText += " : " + showDateTime(dateTime);
+  namediv.className = "namediv";
+  newDiv.appendChild(namediv);
+
+  newDiv.append(willFilter ? filterText(msg) : msg);
+
   addOnTop(newDiv);
 }
 function makeSystemMessage(msg, dateTime) {
   var newDiv = document.createElement("div");
-  newDiv.className = "msgBox system";
+  newDiv.className = "system msgBox";
   newDiv.innerText = msg;
+
   var timediv = document.createElement("div");
   timediv.innerText = showDateTime(dateTime);
   timediv.className = "timediv";
+
   newDiv.appendChild(timediv);
   addOnTop(newDiv);
 }
+
 //SOCKET CONNECTION STUFF
 socket.on("room pass", function (pass) {
   getPassword(pass);
