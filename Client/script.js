@@ -99,7 +99,7 @@ function ding(msg, cancelmsg) {
   };
   document.body.appendChild(div);
   curdings.push(thisding);
-  setTimeout(() => {
+  setTimeout(function () {
     if (!thisding.hascancelled) thisding.cancel();
     curdings.splice(thisding.index, 1);
   }, 2000);
@@ -224,7 +224,7 @@ socket.on("room pass", function (pass) {
   getPassword(pass);
 });
 socket.on("ketchup", function (msgs) {
-  msgs.forEach((data) => {
+  msgs.forEach(function (data) {
     if (data.msgType == msgType.USER)
       makeMessage(data.user, data.msg, data.dateTime);
     else makeSystemMessage(data.msg, data.dateTime);
