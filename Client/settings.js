@@ -11,7 +11,7 @@ fontsizeSlider.oninput = function () {
 function setFontSizes(val) {
   Array.from(container.children).forEach(function (ele) {
     ele.style.fontSize = val + "px";
-    Array.from(ele.children).forEach((elech) => {
+    Array.from(ele.children).forEach(function (elech) {
       elech.style.fontSize = val * (3 / 5) + "px";
     });
   });

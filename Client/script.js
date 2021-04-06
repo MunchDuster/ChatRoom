@@ -48,8 +48,8 @@ function onJoined() {
   } else {
     localStorage.removeItem("remme");
   }
-  coverdivs.forEach((ele) => {
-    Array.from(ele.children).forEach((child) => {
+  coverdivs.forEach(function (ele) {
+    Array.from(ele.children).forEach(function (child) {
       document.body.insertBefore(child, document.body.lastChild);
     });
     ele.parentNode.removeChild(ele);
