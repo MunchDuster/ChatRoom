@@ -99,7 +99,7 @@ function ding(msg, cancelmsg) {
   };
   document.body.appendChild(div);
   curdings.push(thisding);
-  setTimeout(function () {
+  setTimeout(function (thisding) {
     if (!thisding.hascancelled) thisding.cancel();
     curdings.splice(thisding.index, 1);
   }, 2000);
