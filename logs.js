@@ -14,7 +14,7 @@ function loadLogs(c) {
     if (err) {
       console.log(err);
     }
-    if (data != undefined && data != "") {
+    if (data != undefined && Array.isArray(data)) {
       console.log("loaded data: " + data);
       logs = data;
     }
