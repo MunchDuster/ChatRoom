@@ -43,14 +43,21 @@ document.getElementById("goe").addEventListener("click", function () {
 var curdings = [];
 
 //FUNCTIONS
+function savenameAndPass(name, pass) {
+  if (remmebox.checked) {
+    try {
+      localStorage.setItem("remme", name + "$$" + pass);
+    } catch (err) {}
+  } else {
+    try {
+      localStorage.removeItem("remme");
+    } catch (err) {}
+  }
+}
 function onJoined() {
   userName = nameenter.value;
 
-  if (remmebox.checked) {
-    localStorage.setItem("remme", nameenter.value + "$$" + passenter.value);
-  } else {
-    localStorage.removeItem("remme");
-  }
+  savenameAndPass(nameenter.value, passenter.value);
   coverdivs.forEach(function (ele) {
     Array.from(ele.children).forEach(function (child) {
       document.body.insertBefore(child, document.body.lastChild);
