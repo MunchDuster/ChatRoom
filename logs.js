@@ -4,7 +4,8 @@ const filepath = path.join(__dirname, "/chatlogs.json");
 var logs = [];
 function addLog(log) {
   logs.push(log);
-  fs.appendFile(filepath, JSON.stringify(log, null, 4), function (err) {
+
+  fs.writeFile(filepath, JSON.stringify(logs, null, 4), function (err) {
     if (err) throw err;
     console.log("Saved!");
   });
