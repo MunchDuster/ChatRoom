@@ -37,6 +37,7 @@ function addMsg(msg, msgType, dateTime, user) {
   };
 
   addLog(obj);
+  return obj;
 }
 function getDateTime() {
   var dert = new Date();
