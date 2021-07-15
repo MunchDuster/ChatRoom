@@ -3,11 +3,14 @@ const password = "fishy";
 const PORT = process.env.PORT || 8080;
 
 //REQUIREMENTS
+
 const express = require("express");
 const app = express();
 const http = require("http").createServer(app);
 const io = require("socket.io")(http);
 const { joinUser, removeUser } = require("./users");
+const { loadLogs, addLog, getLogs } = require("./logs");
+//chat logs
 
 //CLIENT DATA
 app.use(express.static(__dirname + "/Client"));
@@ -15,12 +18,14 @@ app.get("/", function (req, res) {
   res.sendFile(__dirname + "/index.html");
 });
 
-//OTHER
+//LOAD SAVED CHAT LOGS
+loadLogs();
+
+//MESSAGE TYPE ENUM
 const msgType = {
   USER: 0,
   SYSTEM: 1,
 };
-var msgs = [];
 
 //FUNCTIONS
 function addMsg(msg, msgType, dateTime, user) {
@@ -30,17 +35,8 @@ function addMsg(msg, msgType, dateTime, user) {
     dateTime: dateTime,
     user: user,
   };
-  msgs.push(obj);
 
-  if (msgs.length > 100) {
-    for (var i = 1; i < 100; i++) {
-      msgs[i - 1] = msg[i];
-    }
-    for (var i = 100; i < msgs.length; i++) {
-      msgs[i] = null;
-    }
-  }
-  return obj;
+  addLog(obj);
 }
 function getDateTime() {
   var dert = new Date();
@@ -66,11 +62,11 @@ io.on("connection", function (socket) {
       dateTime
     );
     console.log(joinedMessage);
-    socket.emit("ketchup", msgs);
+    socket.emit("ketchup", getLogs());
     socket.broadcast.emit("receive chat", joinedMessage);
   });
   socket.on("changed name", function (newname) {
-    msgs.forEach();
+    chatlogs.forEach();
   });
   socket.on("chat msg", function (msg, dateTime, user) {
     var msg = addMsg(msg, msgType.USER, dateTime, user);

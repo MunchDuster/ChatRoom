@@ -1,0 +1,22 @@
+{
+    "msg": "Malachai connected",
+    "msgType": 1,
+    "dateTime": {
+        "minute": 13,
+        "hour": 17,
+        "day": 15,
+        "month": 6,
+        "year": 2021
+    }
+}{
+    "msg": "BEAN",
+    "msgType": 0,
+    "dateTime": {
+        "minute": 13,
+        "hour": 17,
+        "day": 15,
+        "month": 6,
+        "year": 2021
+    },
+    "user": "Malachai"
+}

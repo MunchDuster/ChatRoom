@@ -20,12 +20,15 @@ const remmebox = document.getElementById("remme");
 const joindiv = document.getElementsByClassName("joindiv")[0];
 const coverdivs = Array.from(document.getElementsByClassName("coverdiv"));
 
-if (localStorage.getItem("remme")) {
+try {
+  localStorage.getItem("remme");
   const split = localStorage.getItem("remme").split("$$");
   userName = split[0];
   nameenter.value = split[0];
   passenter.value = split[1];
   remmebox.checked = true;
+} catch {
+  console.log("can't read local storage.");
 }
 
 //Join button pressed
