@@ -59,6 +59,7 @@
   top: 0px;
   bottom: 0px;
   filter: blur(5px);
+  pointer-events: none;
 }
 .title {
   text-align: center;
@@ -88,7 +89,6 @@ input {
   height: 30px;
   font-size: large;
 }
-
 body {
   font-family: "Roboto";
   margin: 0px;
