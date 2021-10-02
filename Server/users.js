@@ -13,24 +13,25 @@ function findUserByName(userCollection, userName, userPassword) {
 function findUserById(userCollection, userId) {
 	return userCollection.find({ _id: userId }).toArray();
 }
-async function makeUser(userCollection, userName, userPassword, currentSocket) {
-	var user = createUserObj(userName, userPassword, currentSocket);
+async function makeUser(userCollection, userName, userPassword) {
+	var user = createUserObj(userName, userPassword);
 	var returnValue = await userCollection.insertOne(user);
 	user._id = returnValue.insertedId;
 
 	return user;
 }
 function importUser(loadedUser) {
-	var user = createUserObj(loadedUser.name, loadedUser.password, loadedUser.currentSocket);
+	var user = createUserObj(loadedUser.name, loadedUser.password);
 	user._id = loadedUser._id;
 	user.recentRoomIds = loadedUser.recentRoomIds;
+
 	return user;
 }
-function createUserObj(userName, userPassword, currentSocket) {
+function createUserObj(userName, userPassword) {
 	return {
 		name: userName,
 		password: userPassword,
-		sockets: [currentSocket],
+		sockets: [],
 		recentRoomIds: [],
 		currentRoomIds: [],
 		hoursActive: 0,
@@ -40,6 +41,8 @@ function createUserObj(userName, userPassword, currentSocket) {
 			const roomId = room._id;
 
 			var index = -1;
+			console.log(`recent room ids: ${this.recentRoomIds}`);
+			console.log(this);
 			for (var i = 0; i < this.recentRoomIds.length; i++) {
 				if (this.recentRoomIds[i].roomId == roomId) {
 					index = i;
@@ -77,7 +80,7 @@ function createUserObj(userName, userPassword, currentSocket) {
 				console.log('Updating database on user recent rooms error: ' + err);
 			});
 		},
-		leaveRoom: function (room) {
+		leaveRoom: function (roomId) {
 			//update current rooms
 			var index2 = this.currentRoomIds.indexOf(roomId);
 			if (index2 != -1) {

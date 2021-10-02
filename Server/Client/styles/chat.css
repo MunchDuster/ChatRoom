@@ -1,17 +1,17 @@
 body {
-  background-color: #38105d;
-  color: white;
+  background-color: var(--dark);
+  color: var(--font);
   font-family: sans-serif;
 }
 button {
-  background-color: #8152ad;
+  background-color: var(--med);
   border: none;
   padding: 10 50;
-  color: white;
+  color: var(--font);
   font-size: inherit;
 }
 button:hover {
-  background-color: #603d82;
+  background-color: var(--dark-med);
 }
 h1 {
   text-align: center;
@@ -39,33 +39,35 @@ h1 {
   width: 100%;
   min-height: 20px;
   overflow: visible;
-  background-color: rgb(129, 82, 173);
+  background-color: var(--light);
   border: none;
-  color: white;
-  padding: 10px;
+  color: var(--font);
   font-size: X-large;
+
+  padding-top: 10px;
+  padding-right: 5px;
+  padding-bottom: 10px;
+  padding-left: 10px;
 }
 .InputText::placeholder {
-  color: rgb(202, 202, 202);
+  color: var(--font);
 }
 .MessageContent {
   font-size: large;
 }
 .MessageBox {
   border-radius: 10px;
-  background-color: rgb(103, 51, 152);
-  display: inline-block;
+  background-color: var(--med);
   padding: 20px;
   font-size: larger;
-  margin: 5px;
-  width: calc(100% - 60px);
+  margin-top: 5px;
 
   height: calc(100% - 220px);
   overflow-y: scroll;
 }
 .MessageSendTimeOther,
 .MessageSendTime {
-  color: rgb(195, 195, 195);
+  color: var(--font);
   font-size: small;
   user-select: none;
 
@@ -95,7 +97,7 @@ h1 {
   float: right;
 }
 .OtherMessage {
-  background-color: #8152ad;
+  background-color: var(--light);
   text-align: right;
 }
 .RoomDescription {
@@ -104,7 +106,7 @@ h1 {
 }
 .Section {
   padding: 10px;
-  background-color: #9869c3;
+  background-color: var(--med);
   margin-top: 10px;
   border-radius: 10px;
 }
@@ -114,6 +116,7 @@ h1 {
   font-size: x-large;
   height: 100%;
   line-height: 0;
+  background-color: var(--light);
 
   border-top-right-radius: 15px;
   border-bottom-right-radius: 15px;
@@ -122,12 +125,12 @@ h1 {
   position: absolute;
   top: 10px;
   right: 10px;
-  color: white;
+  color: var(--font);
   font-size: large;
-  background-color: white;
+  background-color: var(--font);
 }
 .Side:hover {
-  background-color: rgba(0, 0, 0, 0);
+  background-color: var(--invisible);
 }
 .Window {
   position: absolute;

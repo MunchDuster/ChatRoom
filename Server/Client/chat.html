@@ -1,5 +1,13 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 	<head>
+		<meta charset="utf-8">
+
+		<title>Munchies chat: Chat</title>
+		<link rel="shortcut icon" href="/images/mememan.png" />
+
+		<link rel="stylesheet" type="text/css" href="styles/theme.css" />
+		<link rel="stylesheet" type="text/css" href="styles/scrollbar.css" />
 		<link rel="stylesheet" type="text/css" href="styles/chat.css" />
 	<head>
 	<body>
@@ -8,26 +16,29 @@
 			<h1>Some Room</h1>
 			<div class="RoomDescription">Description</div>
 			<div class="Side">Password</div>
-			<div class="MessageBox" >
+			<div class="MessageBox" ></div>
+			<div class="Footer Section">
+				<table style="width: 100% ; ">
+					<tr>
+						<td style="width: 100%">
+							
+						</td>
+						</td>
+						<td style="width:  150px; padding: 0px;">
+							<button onclick="sendMessage();" class="SendButton">Send</button>
+						</td>
+					</tr>
+				</table>
+				<flex>
 				
-				</div>
-				<div class="Footer Section">
-					<table style="width: 100% ; ">
-						<tr>
-							<td style="width: 100%">
-								<textarea class="InputText" placeholder="enter message here" oninput="autoResize(this);"></textarea>								</td>
-							</td>
-							<td style="width:  150px; padding: 0px;">			
-								<button onclick="sendMessage();" class="SendButton">Send</button>
-							</td>
-						</tr>
-					</table>
-				</div>	
+				</flex>
 			</div>
 		</div>
 		<div class="Window">
 		</div>
 		
+		<script src="socket.io/socket.io.js"></script>
+
 		<script src="scripts/chatEnvironment.js"></script>
 		<script src="scripts/getRelativeTime.js"></script>
 		<script src="scripts/displayChat.js"></script>

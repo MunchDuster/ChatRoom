@@ -10,9 +10,6 @@ var loadedUserIcons = [];
 
 //PUBLIC FUNCTIONS
 function displayUserMessage(userName, userIcon, date, message) {
-	console.log('utcDate ' + date);
-	console.log('message ' + message);
-
 	if (lastUserToDisplayMessage == userName) {
 		displayUserMessageWithNoName(userName, date, message);
 	} else {
@@ -78,7 +75,6 @@ function displayUserMessageWithNoName(userName, date, message) {
 	sendTimeDiv.innerText = getRelativeTime(date);
 	contentDiv.innerText = message;
 
-	console.log('neams: ' + user.name + ' , ' + userName);
 	if (user.name == userName) {
 		//put messages on my side
 		sendTimeDiv.classList.add("MessageSendTime");

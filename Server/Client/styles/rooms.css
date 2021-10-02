@@ -1,6 +1,6 @@
 body {
-  background-color: #38105d;
-  color: white;
+  background-color: var(--dark);
+  color: var(--font);
   font-family: sans-serif;
 }
 h1 {
@@ -11,14 +11,14 @@ h2 {
   margin-top: 0;
 }
 button {
-  background-color: #8152ad;
+  background-color: var(--med-light);
   border: none;
   padding: 10 50;
-  color: white;
+  color: var(--font);
   font-size: inherit;
 }
 button:hover {
-  background-color: #603d82;
+  background-color: var(--med);
 }
 
 .WideButton {
@@ -30,7 +30,7 @@ button:hover {
 .RoomMenu,
 .RoomList {
   border-radius: 10px;
-  background-color: rgb(103, 51, 152);
+  background-color: var(--dark-med);
   display: inline-block;
   padding: 20px;
   font-size: larger;
@@ -55,12 +55,12 @@ button:hover {
   margin-top: 3px;
   border: none;
   background-color: hsl(271deg 71% 60%);
-  color: white;
+  color: var(--font);
   border-radius: 20px;
 }
 
 .ListedRoom {
-  background-color: #9869c3;
+  background-color: var(--light);
   padding: 5px;
   /*width: 100%;*/
 }
@@ -84,7 +84,7 @@ button:hover {
 
 .HeaderSection {
   padding: 10px;
-  background-color: rgb(103, 51, 152);
+  background-color: var(--med-light);
   border-radius: 10px;
   text-align: center;
   user-select: auto;

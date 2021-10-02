@@ -14,44 +14,66 @@ autoResize();
 
 
 //Socket
-var socket;
+var socket = io();
 
 //Temporary until user icons are sorted.
 var userIcon = 'images/mememan.png';
 
-function setSocket(sock, user, room) {
-	if (user == null || room == null) {
-		alert('Please refresh the page and sign in.');
+//socket handlers and listeners
+
+var user = JSON.parse(sessionStorage.getItem('user')),
+	room = JSON.parse(sessionStorage.getItem('room'));
+
+if (user != null && room != null) {
+	console.log(`user is ${user} and room is ${room}`);
+	console.log(`user name is ${user.name} and room name is ${room.password}, type of room name is ${typeof (room.name)}`);
+	socket.emit('verify', user.name, user.password, room.name, room.password);
+} else {
+	console.log(`can't veriify becaue of missing data:\nuser: ${user}\nroom: ${room}`);
+}
+
+
+socket.on('chat log', (success, messages) => {
+	if (!success) {
+		alert('unable to get chat log.');
 		return;
 	}
-	socket = sock;
 
-	socket.emit('request chat log');
-	socket.on('chat log result', OnRecieveChatLog);
-	socket.on('receive chat', OnRecieveChat);
+	//log recieved meessages
+	console.log(`recieving messages: ${messages.length}.`);
 
-	function OnRecieveChat(message) {
-		console.log('recieved message');
-		displayUserMessage(message.sender, userIcon, message.date, message.message);
+	//display recieved messages
+	for (var i = 0; i < messages.length; i++) {
+		displayUserMessage(messages[i].sender, userIcon, messages[i].date, messages[i].message);
 	}
-	function OnRecieveChatLog(success, messages) {
-		if (!success) alert('unable to get chat log.');
 
-		user.name = username;
-		console.log('recieving messages: ' + messages.length + ' and username = ' + username);
-		for (var i = 0; i < messages.length; i++) {
-			displayUserMessage(messages[i].sender, userIcon, messages[i].date, messages[i].message);
-		}
-	}
-}
+	//scroll to bottom
+	messagesBox.scrollTo(0, document.body.scrollHeight);
+});
+socket.on('chat msg', (message) => {
+	//log to console
+	console.log('recieved message');
+
+	//display user message
+	displayUserMessage(message.sender, userIcon, message.date, message.message);
+
+	//scroll to bottom
+	messagesBox.scrollTo(0, document.body.scrollHeight);
+});
+
 function sendMessage() {
-	var message = textInput.value;
+	//log to console
+	console.log('sending message');
+
+	//tell server
+	socket.emit('chat msg', textInput.value);
+	//display message
+	displayUserMessage(user.name, userIcon, getDate(), textInput.value);
+
+	//clear input box
 	textInput.value = '';
+	//update input box new size
 	autoResize();
-	socket.emit('chat msg', message);
-	//displayUserMessage(userName, userIcon, date, message)
-	console.log(user.name);
-	displayUserMessage(user.name, userIcon, getDate(), message);
 }
 function getDate() {
 	var date = new Date();

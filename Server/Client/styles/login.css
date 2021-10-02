@@ -1,5 +1,5 @@
 body {
-  background-color: #38105d;
+  background-color: var(--dark);
   font-size: large;
 }
 h2 {
@@ -11,10 +11,10 @@ h2 {
   left: 50%;
   transform: translate(-50%, -50%);
 
-  filter: drop-shadow(10px 10px 3px #000);
+  filter: drop-shadow(10px 10px 3px var(--dark-med));
   border-radius: 10px;
   text-align: center;
-  background-color: #673398;
+  background-color: var(--med);
   color: white;
   padding: 20px;
   font-family: sans-serif;
@@ -27,17 +27,17 @@ h2 {
   font-size: x-large;
   margin-top: 3px;
   border: none;
-  background-color: #9b51e1;
+  background-color: var(--light);
   color: white;
   border-radius: 20px;
 }
 .SignUpButton:hover,
 .JoinButton:hover {
-  background-color: #8c48cc;
+  background-color: var(--med);
 }
 .SignUpButton:active,
 .JoinButton:active {
-  background-color: #783eaf;
+  background-color: var(--med-light);
 }
 
 .SignUpButton {
@@ -55,6 +55,6 @@ h2 {
   margin-bottom: 4px;
 }
 table {
-  color: white;
+  color: var(--font);
   font-size: large;
 }

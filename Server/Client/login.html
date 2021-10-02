@@ -1,13 +1,23 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 	<head>
-	<link rel="stylesheet" type="text/css" href="styles/checkmark.css" />
-		<link rel="stylesheet" type="text/css" href="styles/login.css" />
+		<meta charset="utf-8">
+
+		<title>Munchies chat: Login</title>
+		<link rel="shortcut icon" href="/images/mememan.png" />
 		
+		<link rel="stylesheet" type="text/css" href="styles/theme.css" />
+		<link rel="stylesheet" type="text/css" href="styles/scrollbar.css" />
+		<link rel="stylesheet" type="text/css" href="/styles/login.css" />
+
+		<link rel="preconnect" href="https://fonts.gstatic./">
+		<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css2?family=Nova+Square&display=swap" rel="stylesheet">
 	<head>
 	<body>
 		<div class="JoinDiv">
 			<h2>Log in</h2>
-			<form >
+			<form>
 				<label for="username">Username </label>
 				<input autocomplete="off" id="username" type="text" class="InputBox">
 				<br>
@@ -21,6 +31,7 @@
 			<button class="JoinButton" onclick="login();" >Log in</button>
 			<button class="SignUpButton" onclick="signup();">Sign up</button>
 		</div>
+
 		<script src="/socket.io/socket.io.js"></script>
 		<script src="/scripts/login.js"></script>
 	</body>

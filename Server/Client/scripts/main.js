@@ -25,6 +25,4 @@ iframe.onload = () => {
 		console.log('setting room');
 		iframe.contentWindow.setRoom(room);
 	}
-
-
 };
