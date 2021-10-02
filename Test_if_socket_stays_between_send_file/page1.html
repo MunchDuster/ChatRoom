@@ -1,0 +1,18 @@
+<body>
+	<iframe src='page2.html' style="    
+		position: fixed;
+		margin: 0;
+		padding: 0;
+		border: none;
+		height: 100%;
+		width: 100%;"></iframe>
+	<script src="/socket.io/socket.io.js"></script>
+	<script>
+	var socket = io();
+	
+	var iframe = document.querySelector("iframe");
+	iframe.onload = ()=>{
+		iframe.contentWindow.setSocket(socket);
+	};
+	</script>
+</body>

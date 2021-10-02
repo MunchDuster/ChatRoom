@@ -1,0 +1,15 @@
+
+<body>
+Page 2
+<a href="page3.html">Page3</a>
+<button onclick="go();">Message</button>
+<script>
+	var socket;
+	function setSocket(tsocket){
+		socket = tsocket;
+	}
+	function go() {
+		socket.emit('Hello', 'from page 2');
+	}
+</script>
+</body>

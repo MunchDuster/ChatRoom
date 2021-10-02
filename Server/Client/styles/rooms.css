@@ -1,0 +1,105 @@
+body {
+  background-color: #38105d;
+  color: white;
+  font-family: sans-serif;
+}
+h1 {
+  text-align: center;
+  font-size: 50px;
+}
+h2 {
+  margin-top: 0;
+}
+button {
+  background-color: #8152ad;
+  border: none;
+  padding: 10 50;
+  color: white;
+  font-size: inherit;
+}
+button:hover {
+  background-color: #603d82;
+}
+
+.WideButton {
+  padding: 10 100;
+  margin-left: 10px;
+}
+
+.Window,
+.RoomMenu,
+.RoomList {
+  border-radius: 10px;
+  background-color: rgb(103, 51, 152);
+  display: inline-block;
+  padding: 20px;
+  font-size: larger;
+  width: 660px;
+  margin: 5px;
+  /*width: calc(100% - 60px);*/
+}
+.RoomList {
+  top: 180px;
+
+  height: fit-content;
+}
+.RoomMenu {
+  height: 200px;
+  display: inline-block;
+}
+.ListParent {
+}
+.JoinButton {
+  width: 200;
+  font-size: x-large;
+  margin-top: 3px;
+  border: none;
+  background-color: hsl(271deg 71% 60%);
+  color: white;
+  border-radius: 20px;
+}
+
+.ListedRoom {
+  background-color: #9869c3;
+  padding: 5px;
+  /*width: 100%;*/
+}
+.ListedRoom[width="660px"] {
+  width: 100%;
+}
+.ListedRoomName {
+  font-size: xx-large;
+  display: inline-block;
+}
+.ListedRoomDescription {
+  display: inline-block;
+  margin-left: 50px;
+  max-width: 80%;
+  margin-top: 3px;
+}
+.ListedRoomLastAccessed {
+  float: right;
+  display: inline-block;
+}
+
+.HeaderSection {
+  padding: 10px;
+  background-color: rgb(103, 51, 152);
+  border-radius: 10px;
+  text-align: center;
+  user-select: auto;
+}
+.HeaderButton {
+  position: relative;
+  margin: 0px 10%;
+  font-size: larger;
+  border-radius: 50px;
+}
+
+.Window {
+  position: absolute;
+  top: 50px;
+  height: calc(100% - 110px);
+  display: none;
+  text-align: center;
+}

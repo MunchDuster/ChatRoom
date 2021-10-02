@@ -1,0 +1,36 @@
+<html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="styles/chat.css" />
+	<head>
+	<body>
+		<div class="Cover">
+		
+			<h1>Some Room</h1>
+			<div class="RoomDescription">Description</div>
+			<div class="Side">Password</div>
+			<div class="MessageBox" >
+				
+				</div>
+				<div class="Footer Section">
+					<table style="width: 100% ; ">
+						<tr>
+							<td style="width: 100%">
+								<textarea class="InputText" placeholder="enter message here" oninput="autoResize(this);"></textarea>								</td>
+							</td>
+							<td style="width:  150px; padding: 0px;">			
+								<button onclick="sendMessage();" class="SendButton">Send</button>
+							</td>
+						</tr>
+					</table>
+				</div>	
+			</div>
+		</div>
+		<div class="Window">
+		</div>
+		
+		<script src="scripts/chatEnvironment.js"></script>
+		<script src="scripts/getRelativeTime.js"></script>
+		<script src="scripts/displayChat.js"></script>
+		<script src="scripts/chatMessages.js"></script>
+	</body>
+</html>

@@ -1,0 +1,137 @@
+body {
+  background-color: #38105d;
+  color: white;
+  font-family: sans-serif;
+}
+button {
+  background-color: #8152ad;
+  border: none;
+  padding: 10 50;
+  color: white;
+  font-size: inherit;
+}
+button:hover {
+  background-color: #603d82;
+}
+h1 {
+  text-align: center;
+  font-size: 50px;
+  text-decoration: underline;
+  margin-bottom: 10px;
+}
+
+/*Custom classes*/
+.ChatMessage {
+  /*background-color: #8152ad;*/
+  padding: 5px;
+  /*width: 100%;*/
+}
+
+.Footer {
+  text-align: center;
+}
+.InputText {
+  outline: none;
+
+  border-top-left-radius: 15px;
+  border-bottom-left-radius: 15px;
+  resize: none;
+  width: 100%;
+  min-height: 20px;
+  overflow: visible;
+  background-color: rgb(129, 82, 173);
+  border: none;
+  color: white;
+  padding: 10px;
+  font-size: X-large;
+}
+.InputText::placeholder {
+  color: rgb(202, 202, 202);
+}
+.MessageContent {
+  font-size: large;
+}
+.MessageBox {
+  border-radius: 10px;
+  background-color: rgb(103, 51, 152);
+  display: inline-block;
+  padding: 20px;
+  font-size: larger;
+  margin: 5px;
+  width: calc(100% - 60px);
+
+  height: calc(100% - 220px);
+  overflow-y: scroll;
+}
+.MessageSendTimeOther,
+.MessageSendTime {
+  color: rgb(195, 195, 195);
+  font-size: small;
+  user-select: none;
+
+  display: initial;
+}
+.MessageSendTimeOther {
+  margin-bottom: 5;
+}
+.MessageSenderIconOther,
+.MessageSenderIcon {
+  height: 30px;
+  width: 30px;
+  border-radius: 50px;
+}
+.MessageSenderNameOther,
+.MessageSenderName {
+  display: inline-block;
+  vertical-align: top;
+  margin-top: 5px;
+  font-size: large;
+  /*text-decoration: underline;*/
+}
+.MessageSenderNameOther {
+  margin-bottom: 5px;
+}
+.MessageSenderIconOther {
+  float: right;
+}
+.OtherMessage {
+  background-color: #8152ad;
+  text-align: right;
+}
+.RoomDescription {
+  text-align: center;
+  font-size: large;
+}
+.Section {
+  padding: 10px;
+  background-color: #9869c3;
+  margin-top: 10px;
+  border-radius: 10px;
+}
+.SendButton {
+  margin: 0px 0%;
+  position: relative;
+  font-size: x-large;
+  height: 100%;
+  line-height: 0;
+
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+}
+.Side {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: white;
+  font-size: large;
+  background-color: white;
+}
+.Side:hover {
+  background-color: rgba(0, 0, 0, 0);
+}
+.Window {
+  position: absolute;
+  top: 50px;
+  height: calc(100% - 110px);
+  display: none;
+}

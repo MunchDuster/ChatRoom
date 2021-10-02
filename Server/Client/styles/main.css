@@ -1,0 +1,26 @@
+iframe {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  margin: 0px;
+  padding: 0px;
+  border: none;
+  height: 100%;
+  width: 100%;
+}
+body {
+  padding: 0px;
+  margin: 0px;
+  overflow: hidden;
+}
+.ReloadButton {
+  z-index: 1000000;
+  position: fixed;
+  background-color: #673398;
+  top: 5px;
+  left: 5px;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  padding: 10px;
+}

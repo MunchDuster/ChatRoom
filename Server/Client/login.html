@@ -1,0 +1,27 @@
+<html>
+	<head>
+	<link rel="stylesheet" type="text/css" href="styles/checkmark.css" />
+		<link rel="stylesheet" type="text/css" href="styles/login.css" />
+		
+	<head>
+	<body>
+		<div class="JoinDiv">
+			<h2>Log in</h2>
+			<form >
+				<label for="username">Username </label>
+				<input autocomplete="off" id="username" type="text" class="InputBox">
+				<br>
+				<label for="userpassword">Password </label>
+				<input autocomplete="off" id="userpassword" type="password" class="InputBox">
+				<br>
+				<label for="rememberme">Remember Me </label>
+				<input autocomplete="off" id="rememberme" type="checkbox">
+			</form>
+			
+			<button class="JoinButton" onclick="login();" >Log in</button>
+			<button class="SignUpButton" onclick="signup();">Sign up</button>
+		</div>
+		<script src="/socket.io/socket.io.js"></script>
+		<script src="/scripts/login.js"></script>
+	</body>
+</html>

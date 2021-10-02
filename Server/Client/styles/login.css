@@ -1,0 +1,60 @@
+body {
+  background-color: #38105d;
+  font-size: large;
+}
+h2 {
+  margin-top: 0;
+}
+.JoinDiv {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  filter: drop-shadow(10px 10px 3px #000);
+  border-radius: 10px;
+  text-align: center;
+  background-color: #673398;
+  color: white;
+  padding: 20px;
+  font-family: sans-serif;
+  font-size: larger;
+  width: fit-content;
+}
+.SignUpButton,
+.JoinButton {
+  width: 200;
+  font-size: x-large;
+  margin-top: 3px;
+  border: none;
+  background-color: #9b51e1;
+  color: white;
+  border-radius: 20px;
+}
+.SignUpButton:hover,
+.JoinButton:hover {
+  background-color: #8c48cc;
+}
+.SignUpButton:active,
+.JoinButton:active {
+  background-color: #783eaf;
+}
+
+.SignUpButton {
+  width: 100px;
+  font-size: small;
+  padding: 2px 10px;
+}
+.InputBox {
+  border-radius: 19px;
+  user-select: auto;
+  border: none;
+  padding: 5px 10px;
+  outline: none;
+  font-size: large;
+  margin-bottom: 4px;
+}
+table {
+  color: white;
+  font-size: large;
+}
