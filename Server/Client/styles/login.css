@@ -30,21 +30,17 @@ h2 {
   background-color: var(--light);
   color: white;
   border-radius: 20px;
+  padding: 5px 25px;
 }
 .SignUpButton:hover,
 .JoinButton:hover {
-  background-color: var(--med);
+  background-color: var(--med-light);
 }
 .SignUpButton:active,
 .JoinButton:active {
-  background-color: var(--med-light);
+  background-color: var(--med-light-med);
 }
 
-.SignUpButton {
-  width: 100px;
-  font-size: small;
-  padding: 2px 10px;
-}
 .InputBox {
   border-radius: 19px;
   user-select: auto;
@@ -57,4 +53,6 @@ h2 {
 table {
   color: var(--font);
   font-size: large;
+}
+.JoinButton {
 }

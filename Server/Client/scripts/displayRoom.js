@@ -1,4 +1,7 @@
-function displayRoom(parentTo, roomName, roomDescription, roomLastAccessed, buttonOnclick) {
+function displayRoom(parentTo, room, buttonOnclick) {
+	const roomName = room.name,
+		roomDescription = room.description,
+		roomLastAccessed = room.date;
 	const roomDiv = document.createElement('div');
 
 	const roomNameDiv = document.createElement('div');
@@ -15,7 +18,7 @@ function displayRoom(parentTo, roomName, roomDescription, roomLastAccessed, butt
 
 	roomNameDiv.innerText = roomName;
 	joinNowButton.innerText = 'Join Now';
-	joinNowButton.onclick = buttonOnclick;
+	joinNowButton.onclick = () => { buttonOnclick(room); };
 	roomLastAccessedDiv.innerText = getRelativeTime(roomLastAccessed);
 	roomDescriptionDiv.innerText = roomDescription;
 

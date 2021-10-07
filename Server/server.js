@@ -44,9 +44,9 @@ async function OnMongoClientConnected(err) {
 	messageCollection = client.db("Database01").collection("Logs");
 
 	// Clear database
-	// messageCollection.deleteMany({});
-	// userCollection.deleteMany({});
-	// roomCollection.deleteMany({});
+	messageCollection.deleteMany({});
+	userCollection.deleteMany({});
+	roomCollection.deleteMany({});
 
 	postListeners();
 	socketListeners();
@@ -65,24 +65,43 @@ async function postListeners() {
 
 	app.post('/login', async (req, res) => {
 		var { username, userpass } = req.body;
-		console.log(`login attmept: ${username}, ${userpass}`);
+		console.log(`login attempt: ${username}, ${userpass}`);
 
 		var users = await findUserByName(userCollection, username, userpass).catch(err => {
-			console.log('login failed: ');
+			console.log('login database query failed: ' + err);
 		});
 
 		if (users.length == 0) {
 			//log to console
 			console.log('login attempt failed: no user exists.');
 			//tell client: fail
-			res.send({ success: false, err: 'No such user exists.' });
+			res.send({ success: false, data: 'No such user exists.' });
 		} else {
 			//import user from database data
 			var user = importUser(users[0]);
 			//log to console
 			console.log(`${user.name} logged in.`);
+
+			//get user recent rooms
+			var recentRoomsIds = user.recentRoomIds;
+
+			var recentRooms = [];
+
+			for (var i = 0; i < recentRoomsIds.length; i++) {
+				var room = (await roomCollection.find({ _id: recentRoomsIds[i].roomId }).toArray())[0];
+				recentRooms.push({ name: room.name, date: recentRoomsIds[i].lastAccessed, description: room.description })
+			}
+
+			//get user's rooms
+			rooms = await roomCollection.find({ ownerId: user._id }).toArray();
+			var myRooms = [];
+			for (var i = 0; i < rooms.length; i++) {
+				var room = rooms[i];
+				myRooms.push({ name: room.name, date: room.ownerLastAccessed, description: room.description })
+			}
+
 			//tell client: success
-			res.send({ success: true });
+			res.send({ success: true, data: { recentRooms: recentRooms, myRooms: myRooms } });
 		}
 	});
 
@@ -95,7 +114,7 @@ async function postListeners() {
 
 		if (users.length > 0) {
 			//log to console
-			console.log('signup attempt failed');
+			console.log('signup attempt failed: user already registered');
 			//tell client: fail
 			res.send({ success: false, err: 'User already exists.' });
 		} else {
@@ -108,33 +127,39 @@ async function postListeners() {
 		}
 	});
 
-	app.post('/newroom', async (req, res) => {
-		var { roomname, roompass, roomdesc } = req.body;
-		console.log(`attempt new room: ${roomname}, ${roompass}, ${roomdesc}`);
+	app.post('/newroom', async function (req, res) {
+		var { roomname, roompass, roomdesc, suername, username, userpass } = req.body;
+
 		var rooms = await findRoomByName(roomCollection, roomname, roompass).catch(err => {
 			console.error(`Create room error: ${roomname}, ${roompass}, ${roomdesc}:\n${err}`);
-
 		});
 		if (rooms == null) { return; }
 
 		if (rooms.length > 0) {
 			//log to console
-			console.log('create room attempt failed');
+			console.log('create room attempt failed, already exists.');
 			//tell client: fail
 			res.send({ success: false, info: 'Room with name already exits already exists.' });
 		} else {
-			//import user from database data
-			var room = await makeRoom(roomCollection, roomname, roompass, roomdesc);
-			//log to console
-			console.log(room.name + ' has been created.');
-			//tell client: success
-			res.send({ success: true });
+			var users = await userCollection.find({ name: username, password: userpass }).toArray();
+			if (users.length == 0) {
+				console.log('new room load failed: owner does not exist.');
+
+			}
+			else {
+				user = users[0];
+				//import room from database data
+				var room = await makeRoom(roomCollection, roomname, roompass, roomdesc, user._id);
+				//log to console
+				console.log(room.name + ' has been created.');
+				//tell client: success
+				res.send({ success: true });
+			}
 		}
 	});
 
-	app.post('/joinroom', async (req, res) => {
+	app.post('/joinroom', async function (req, res) {
 		var { roomname, roompass } = req.body;
-		console.log(`attempt join room: ${roomname}, ${roompass}`);
 
 		var rooms = await findUserByName(roomCollection, roomname, roompass).catch(err => {
 			console.error(`Join room error: ${roomname}, ${roompass}:\n${err}`);
@@ -147,17 +172,42 @@ async function postListeners() {
 			var room = rooms[0];
 			//tell client: success
 			var roomInfo = {
-				name: roomname,
-				password: roompass,
 				description: room.description,
 				ownerId: room.ownerId
 			};
 			res.send({ success: true, info: roomInfo });
 		} else {
 
-			console.log('join room attempt failure: room already exists.');
+			console.log('join room attempt failure: room does not exist.');
 			//tell client: success
-			res.send({ success: false, info: "Room already exists." });
+			res.send({ success: false, info: "Room does not exist." });
+		}
+	});
+	app.post('/quickjoinroom', async function (req, res) {
+		var { roomname } = req.body;
+		console.log(`attempt quick join room: ${roomname}`);
+
+		var rooms = await findUserByNameOnly(roomCollection, roomname).catch(err => {
+			console.error(`Join room error: ${roomname}:\n${err}`);
+		});
+
+		if (rooms.length > 0) {
+			//log to console
+			console.log('quick join room attempt success');
+			//get first room
+			var room = rooms[0];
+			//tell client: success
+			var roomInfo = {
+				password: room.password,
+				description: room.description,
+				ownerId: room.ownerId
+			};
+			res.send({ success: true, info: roomInfo });
+		} else {
+
+			console.log('join room attempt failure: room does not exist.');
+			//tell client: success
+			res.send({ success: false, info: "Room does not exist." });
 		}
 	});
 }
@@ -205,8 +255,9 @@ async function socketListeners() {
 			room.addUser(messageCollection, user);
 			//send the user the chat log latest 50 messages
 			var top50messages = await room.getTopMessages(messageCollection, 50);
-			console.log(`top 50 messages: ${top50messages}`);
 			socket.emit('chat log', true, top50messages);
+
+			verified = true;
 		});
 		socket.on('chat msg', async (text) => {
 			if (!verified) { return; }

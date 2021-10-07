@@ -1,10 +1,37 @@
+//Make and join room window stuff
 const recentRoomsDiv = document.querySelector('.Recent');
 const myRoomsDiv = document.querySelector('.MyRooms');
 
+const roomMakeNameInput = document.getElementById('roomMakeName');
+const roomMakeDescriptionInput = document.getElementById('roomMakeDesc');
+const roomMakePasswordInput = document.getElementById('roomMakePass');
 
-function OnMakeRoomResult({ success, err }) {
-	console.log('server responded to make room ')
+const roomJoinNameInput = document.getElementById('roomName');
+const roomJoinPasswordInput = document.getElementById('roomPass');
+
+var quickJoinRoomName;
+//GET USER FROM SESSION_STORAGE
+var user = sessionStorage.getItem('user');
+if (user != 'undefined') {
+	user = JSON.parse(user);
+
+	//show recent rooms
+	for (var i = 0; i < user.recentRooms.length; i++) {
+		var room = user.recentRooms[i];
+		displayRoom(recentRoomsDiv, room, quickJoinRoom);
+	}
+
+	//show my rooms
+	for (var i = 0; i < user.myRooms.length; i++) {
+		var room = user.myRooms[i];
+		displayRoom(myRoomsDiv, room, quickJoinRoom);
+	}
+}
+
+
+function OnMakeRoomResult({ success, info }) {
 	if (success) {
+		console.log('Make room success');
 		//save to sessionStorage
 		var roomInfo = {
 			name: roomMakeNameInput.value,
@@ -16,25 +43,34 @@ function OnMakeRoomResult({ success, err }) {
 		//load 
 		window.location.href = '/chat.html';
 	} else {
-		alert(err);
+		console.log('Make room failure: ' + info);
+		alert(info);
 	}
 }
 function OnJoinRoomResult({ success, info }) {
-	console.log('server responded to join room ')
 	if (success) {
+		console.log('Join room success');
 		//save to sessionStorage
-		sessionStorage.setItem('room', JSON.stringify(info));
+		var room = Object.assign({
+			name: roomJoinNameInput.value,
+			password: roomJoinPasswordInput.value,
+		}, info);
+		sessionStorage.setItem('room', JSON.stringify(room));
 
 		//load 
 		window.location.href = '/chat.html';
 	} else {
+		console.log('Join room failure: ' + info);
 		alert(info);
 	}
 }
 function OnQuickJoinRoomResult({ success, info }) {
 	if (success) {
 		//save to sessionStorage
-		sessionStorage.setItem('room', JSON.stringify(info));
+		var data = Object.assign({
+			name: quickJoinRoomName
+		}, info);
+		sessionStorage.setItem('room', JSON.stringify(data));
 
 		//load 
 		window.location.href = '/chat.html';
@@ -63,20 +99,15 @@ function OnRoomsResult({ recentRooms, myRooms }) {
 }
 
 
-//Make and join room window stuff
-const roomMakeNameInput = document.getElementById('roomMakeName');
-const roomMakeDescinput = document.getElementById('roomMakeDesc');
-const roomMakePassinput = document.getElementById('roomMakePass');
-
-const roomJoinNameInput = document.getElementById('roomName');
-const roomJoinPassInput = document.getElementById('roomPass');
 
 function makeRoom() {
 	// socket.emit('make room attempt', roomMakeNameInput.value, roomMakePassinput.value, roomMakeDescinput.value);
 	const data = {
 		roomname: roomMakeNameInput.value,
-		roompass: roomMakePassinput.value,
-		roomdesc: roomMakeDescinput.value
+		roompass: roomMakePasswordInput.value,
+		roomdesc: roomMakeDescriptionInput.value,
+		username: user.name,
+		userpass: user.password
 	};
 	const options = {
 		method: 'POST',
@@ -92,10 +123,10 @@ function makeRoom() {
 
 }
 function joinRoom() {
-	// socket.emit('join room attempt', roomJoinNameInput.value, roomJoinPassInput.value);
+	// socket.emit('join room attempt', roomJoinNameInput.value, roomJoinPasswordInput.value);
 	const data = {
 		roomname: roomJoinNameInput.value,
-		roompass: roomJoinPassInput.value,
+		roompass: roomJoinPasswordInput.value,
 	};
 	const options = {
 		method: 'POST',
@@ -112,8 +143,9 @@ function joinRoom() {
 function quickJoinRoom(room) {
 	//socket.emit('quick join room attempt', room._id);
 	const data = {
-		roomname: roomJoinNameInput.value,
+		roomname: room.name,
 	};
+	quickJoinRoomName = room.name;
 	const options = {
 		method: 'POST',
 		headers: {
@@ -128,12 +160,3 @@ function quickJoinRoom(room) {
 
 }
 
-const makeRoomWindow = document.querySelector('.MakeRoom');
-const joinRoomWindow = document.querySelector('.JoinRoom');
-
-function openMakeRoomWindow() {
-	openWindow(makeRoomWindow);
-}
-function openJoinRoomWindow() {
-	openWindow(joinRoomWindow);
-}

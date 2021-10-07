@@ -8,6 +8,10 @@ function autoResize() {
 	textInput.style.height = (textInput.scrollHeight) + 'px';
 	sendButton.style.height = (textInput.scrollHeight) + 'px';
 	messagesBox.scrollTop = messagesBox.scrollHeight;
+
+
+	//scroll to bottom of page
+	window.scrollTo(0, document.body.scrollHeight);
 }
 window.addEventListener('resize', autoResize);
 autoResize();
@@ -21,12 +25,27 @@ var userIcon = 'images/mememan.png';
 
 //socket handlers and listeners
 
-var user = JSON.parse(sessionStorage.getItem('user')),
-	room = JSON.parse(sessionStorage.getItem('room'));
+//load the user
+var user;
+var loadedData = sessionStorage.getItem('user');
+if (loadedData != 'undefined') {
+	user = JSON.parse(loadedData);
+
+} else {
+	window.location.href = '/login.html';
+}
+
+//loaded the room
+var room;
+loadedData = sessionStorage.getItem('room');
+if (loadedData != 'undefined') {
+	room = JSON.parse(loadedData);
+
+} else {
+	window.location.href = '/login.html';
+}
 
 if (user != null && room != null) {
-	console.log(`user is ${user} and room is ${room}`);
-	console.log(`user name is ${user.name} and room name is ${room.password}, type of room name is ${typeof (room.name)}`);
 	socket.emit('verify', user.name, user.password, room.name, room.password);
 } else {
 	console.log(`can't veriify becaue of missing data:\nuser: ${user}\nroom: ${room}`);
@@ -48,7 +67,7 @@ socket.on('chat log', (success, messages) => {
 	}
 
 	//scroll to bottom
-	messagesBox.scrollTo(0, document.body.scrollHeight);
+	messagesBox.scrollTo(0, messagesBox.scrollHeight);
 });
 socket.on('chat msg', (message) => {
 	//log to console
@@ -58,10 +77,12 @@ socket.on('chat msg', (message) => {
 	displayUserMessage(message.sender, userIcon, message.date, message.message);
 
 	//scroll to bottom
-	messagesBox.scrollTo(0, document.body.scrollHeight);
+	messagesBox.scrollTo(0, messagesBox.scrollHeight);
 });
 
 function sendMessage() {
+	if (textInput.value == '') return;
+
 	//log to console
 	console.log('sending message');
 

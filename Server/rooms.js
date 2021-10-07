@@ -1,9 +1,7 @@
 module.exports = { findRoomByName, findRoomByNameOnly, findRoomById, makeRoom, removeRoom, importRoom };
 
-const { type } = require("express/lib/response");
 const { MessageType } = require("./enums");
 const { getDate } = require("./getDate.js");
-const ObjectID = require('mongodb').ObjectID;
 
 function findRoomByName(roomCollection, roomName, roomPassword) {
 	var stuff = roomCollection.find({ name: roomName, password: roomPassword });
@@ -13,18 +11,12 @@ function findRoomByNameOnly(roomCollection, roomName) {
 	return roomCollection.find({ name: roomName }).toArray();
 }
 async function findRoomById(roomCollection, room_id) {
-	console.log(room_id);
 	var allRooms = await roomCollection.find({}).toArray();
 	var returnVals = [];
 	for (var i = 0; i < allRooms.length; i++) {
 		var room = allRooms[i];
 		var roomID = room._id;
 		var myroomID = room_id;
-		console.log('this room id: ' + roomID);
-		console.log('test id:      ' + room_id);
-		console.log('this room type: ' + typeof (roomID));
-		console.log('test type:      ' + typeof (myroomID));
-		console.log(myroomID.equals(roomID));
 
 		if (myroomID.equals(roomID)) {
 			returnVals.push(room);
@@ -107,6 +99,7 @@ function makeRoomObj(name, pass, desc, ownerId) {
 			});
 			console.log('added message to room.');
 			messageObj._id = returnedVal.insertedId;
+
 			return messageObj;
 		},
 		getUserIndex: function (user) {
@@ -121,7 +114,7 @@ function makeRoomObj(name, pass, desc, ownerId) {
 			return messagesCollection.find({ room_id: this._id }).toArray();
 		},
 		getTopMessages: async function (messagesCollection, length) {
-			var allMessagesinRoom = await messagesCollection.find({ roomId: this._id });
+			var allMessagesinRoom = await messagesCollection.find({ roomId: this._id, type: 4 });
 			var allMessagesArr = await allMessagesinRoom.toArray().catch(function (err) {
 				console.error(`get top messages error: ${err}`);
 			});

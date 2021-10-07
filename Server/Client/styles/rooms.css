@@ -13,7 +13,7 @@ h2 {
 button {
   background-color: var(--med-light);
   border: none;
-  padding: 10 50;
+  padding: 10px 50px;
   color: var(--font);
   font-size: inherit;
 }
@@ -34,7 +34,7 @@ button:hover {
   display: inline-block;
   padding: 20px;
   font-size: larger;
-  width: 660px;
+  width: max(300px, 80vw);
   margin: 5px;
   /*width: calc(100% - 60px);*/
 }
@@ -62,10 +62,7 @@ button:hover {
 .ListedRoom {
   background-color: var(--light);
   padding: 5px;
-  /*width: 100%;*/
-}
-.ListedRoom[width="660px"] {
-  width: 100%;
+  margin: 4px;
 }
 .ListedRoomName {
   font-size: xx-large;
@@ -83,23 +80,25 @@ button:hover {
 }
 
 .HeaderSection {
-  padding: 10px;
   background-color: var(--med-light);
-  border-radius: 10px;
   text-align: center;
-  user-select: auto;
 }
 .HeaderButton {
   position: relative;
   margin: 0px 10%;
-  font-size: larger;
-  border-radius: 50px;
+  font-size: min(4vw, 20px);
+  border-radius: 25vw;
+  padding: 0.3em 1.5em;
+  background-color: var(--light);
+  margin: 3px;
 }
 
 .Window {
   position: absolute;
-  top: 50px;
-  height: calc(100% - 110px);
+  /* height: calc(100% - 110px); */
   display: none;
   text-align: center;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  top: 50%;
 }

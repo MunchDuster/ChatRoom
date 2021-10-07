@@ -11,7 +11,7 @@ function openWindow(windowEle) {
 	coverEle.style.pointerEvents = 'none';
 	coverEle.style.userSelect = 'none';
 
-	windowEle.style.display = 'block';
+	windowEle.style.display = 'inline-block';
 }
 function closeCurrentWindow() {
 	coverEle.style = prevCoverSettings;

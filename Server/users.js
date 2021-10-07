@@ -38,29 +38,25 @@ function createUserObj(userName, userPassword) {
 
 		enterRoom: function (userCollection, room) {
 			//update recent rooms
-			const roomId = room._id;
-
 			var index = -1;
-			console.log(`recent room ids: ${this.recentRoomIds}`);
-			console.log(this);
 			for (var i = 0; i < this.recentRoomIds.length; i++) {
-				if (this.recentRoomIds[i].roomId == roomId) {
+				if (this.recentRoomIds[i].roomId.equals(room._id)) {
 					index = i;
 					break;
 				}
 			}
 
 			if (index != -1) {
-				console.log('user already in room');
+				console.log(`${user.name} has already been in room`);
 				this.recentRoomIds.splice(index, 1);
 			}
-			//append room to recent room ids
-			this.recentRoomIds.unshift({ roomId: roomId, lastAccessed: getDate() });
+			//set as first room in recent room ids
+			this.recentRoomIds.unshift({ roomId: room._id, lastAccessed: getDate() });
 
 			//update current rooms
-			var index2 = this.currentRoomIds.indexOf(roomId);
+			var index2 = this.currentRoomIds.indexOf(room._id);
 			if (index2 == -1) {
-				this.currentRoomIds.push(roomId);
+				this.currentRoomIds.push(room._id);
 			}
 
 			//update recent rooms on database

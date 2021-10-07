@@ -2,6 +2,7 @@ body {
   background-color: var(--dark);
   color: var(--font);
   font-family: sans-serif;
+  /* overflow: hidden; */
 }
 button {
   background-color: var(--med);
@@ -24,11 +25,12 @@ h1 {
 .ChatMessage {
   /*background-color: #8152ad;*/
   padding: 5px;
-  /*width: 100%;*/
+  width: 100%;
 }
 
 .Footer {
-  text-align: center;
+  /*text-align: center;*/
+  display: flex;
 }
 .InputText {
   outline: none;
@@ -36,7 +38,7 @@ h1 {
   border-top-left-radius: 15px;
   border-bottom-left-radius: 15px;
   resize: none;
-  width: 100%;
+  width: calc(100%);
   min-height: 20px;
   overflow: visible;
   background-color: var(--light);
@@ -45,15 +47,17 @@ h1 {
   font-size: X-large;
 
   padding-top: 10px;
-  padding-right: 5px;
-  padding-bottom: 10px;
   padding-left: 10px;
+  padding-right: 10px;
+
+  margin-right: 5px;
 }
 .InputText::placeholder {
   color: var(--font);
 }
 .MessageContent {
   font-size: large;
+  word-break: break-word;
 }
 .MessageBox {
   border-radius: 10px;
@@ -62,7 +66,7 @@ h1 {
   font-size: larger;
   margin-top: 5px;
 
-  height: calc(100% - 220px);
+  height: calc(95vh - 220px);
   overflow-y: scroll;
 }
 .MessageSendTimeOther,
@@ -120,6 +124,7 @@ h1 {
 
   border-top-right-radius: 15px;
   border-bottom-right-radius: 15px;
+  padding-right: 10px;
 }
 .Side {
   position: absolute;
@@ -137,4 +142,11 @@ h1 {
   top: 50px;
   height: calc(100% - 110px);
   display: none;
+}
+.Cover {
+  /* height: 100%;
+  position: fixed;
+  width: calc(100% - 15px);
+  margin: 0px;
+  padding: 0px; */
 }

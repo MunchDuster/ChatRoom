@@ -8,7 +8,6 @@ function login() {
 		username: nameInput.value,
 		userpass: passwordInput.value
 	};
-	console.log(`passwordInput is ${passwordInput}`);
 	const options = {
 		method: 'POST',
 		headers: {
@@ -41,26 +40,38 @@ function signup() {
 }
 
 
-function OnLoginResult({ success, err }) {
+function OnLoginResult({ success, data }) {
 	if (success) {
+		console.log('login successful');
 		//set the user in sessionstorage for other pages on site
-		sessionStorage.setItem('user', JSON.stringify({ name: nameInput.value, password: passwordInput.value }));
+		var nameAndPass = { name: nameInput.value, password: passwordInput.value }
+		var userInfo = Object.assign(nameAndPass, data)
+		sessionStorage.setItem('user', JSON.stringify(userInfo));
 		//contine to rooms page
 		window.location.href = '/rooms.html';
 	} else {
+		console.log('login fail');
 		//something failed, probably incorrect password or username
-		alert('Incorrect username or password.');
+		alert(data);
 	}
 }
 function OnSignUpResult({ success, err }) {
 	if (success) {
+		console.log('signup successful');
 		//set the user in sessionstorage for other pages on site
-		sessionStorage.setItem('user', JSON.stringify({ name: nameInput.value, password: passwordInput.value }));
+		sessionStorage.setItem('user', JSON.stringify({
+			name: nameInput.value,
+			password: passwordInput.value,
+			recentRooms: [],
+			myRooms: []
+		}));
 		//contine to rooms page
 		window.location.href = '/rooms.html';
 	} else {
+
+		console.log('signup fail');
 		//something failed, probably username has already been taken
-		alert('Login failed');
+		alert(err);
 	}
 }
 
