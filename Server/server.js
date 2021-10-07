@@ -44,9 +44,9 @@ async function OnMongoClientConnected(err) {
 	messageCollection = client.db("Database01").collection("Logs");
 
 	// Clear database
-	messageCollection.deleteMany({});
-	userCollection.deleteMany({});
-	roomCollection.deleteMany({});
+	// messageCollection.deleteMany({});
+	// userCollection.deleteMany({});
+	// roomCollection.deleteMany({});
 
 	postListeners();
 	socketListeners();
