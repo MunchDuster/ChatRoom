@@ -1,5 +1,18 @@
 const textInput = document.querySelector(".InputText");
 const sendButton = document.querySelector(".SendButton");
+const messagesBox = document.querySelector(".MessagesBox");
+
+
+
+
+events.addListener('OnJoinRoom', () => {
+	document.querySelector('.Rooms').style.display = 'none';
+	document.querySelector('.Chat').style.display = 'block';
+});
+
+
+
+
 
 
 //Resize the input box
@@ -17,39 +30,10 @@ window.addEventListener('resize', autoResize);
 autoResize();
 
 
-//Socket
-var socket = io();
-
 //Temporary until user icons are sorted.
 var userIcon = 'images/mememan.png';
 
 //socket handlers and listeners
-
-//load the user
-var user;
-var loadedData = sessionStorage.getItem('user');
-if (loadedData != 'undefined') {
-	user = JSON.parse(loadedData);
-
-} else {
-	window.location.href = '/login.html';
-}
-
-//loaded the room
-var room;
-loadedData = sessionStorage.getItem('room');
-if (loadedData != 'undefined') {
-	room = JSON.parse(loadedData);
-
-} else {
-	window.location.href = '/login.html';
-}
-
-if (user != null && room != null) {
-	socket.emit('verify', user.name, user.password, room.name, room.password);
-} else {
-	console.log(`can't veriify becaue of missing data:\nuser: ${user}\nroom: ${room}`);
-}
 
 
 socket.on('chat log', (success, messages) => {
@@ -78,6 +62,12 @@ socket.on('chat msg', (message) => {
 
 	//scroll to bottom
 	messagesBox.scrollTo(0, messagesBox.scrollHeight);
+
+	//make the title have an alert i window is not focused
+	if (!document.hasFocus()) {
+		//change the page icon
+		document.querySelector("link[rel=\"shortcut icon\"]").href = 'images/notification.png';
+	}
 });
 
 function sendMessage() {

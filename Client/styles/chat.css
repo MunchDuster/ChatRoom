@@ -1,19 +1,8 @@
-body {
-  background-color: var(--dark);
-  color: var(--font);
-  font-family: sans-serif;
-  /* overflow: hidden; */
+/* Hide at start */
+.Chat {
+  display: none;
 }
-button {
-  background-color: var(--med);
-  border: none;
-  padding: 10 50;
-  color: var(--font);
-  font-size: inherit;
-}
-button:hover {
-  background-color: var(--dark-med);
-}
+
 h1 {
   text-align: center;
   font-size: 50px;
@@ -34,7 +23,7 @@ h1 {
 }
 .InputText {
   outline: none;
-
+  cursor: default;
   border-top-left-radius: 15px;
   border-bottom-left-radius: 15px;
   resize: none;
@@ -132,9 +121,11 @@ h1 {
   right: 10px;
   color: var(--font);
   font-size: large;
-  background-color: var(--font);
 }
-.Side:hover {
+.SideChild {
+  background-color: white;
+}
+.SideChild:hover {
   background-color: var(--invisible);
 }
 .Window {

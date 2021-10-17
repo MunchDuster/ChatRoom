@@ -9,154 +9,105 @@ const roomMakePasswordInput = document.getElementById('roomMakePass');
 const roomJoinNameInput = document.getElementById('roomName');
 const roomJoinPasswordInput = document.getElementById('roomPass');
 
-var quickJoinRoomName;
-//GET USER FROM SESSION_STORAGE
-var user = sessionStorage.getItem('user');
-if (user != 'undefined') {
-	user = JSON.parse(user);
-
-	//show recent rooms
-	for (var i = 0; i < user.recentRooms.length; i++) {
-		var room = user.recentRooms[i];
-		displayRoom(recentRoomsDiv, room, quickJoinRoom);
-	}
-
-	//show my rooms
-	for (var i = 0; i < user.myRooms.length; i++) {
-		var room = user.myRooms[i];
-		displayRoom(myRoomsDiv, room, quickJoinRoom);
-	}
-}
 
 
-function OnMakeRoomResult({ success, info }) {
-	if (success) {
-		console.log('Make room success');
-		//save to sessionStorage
-		var roomInfo = {
-			name: roomMakeNameInput.value,
-			password: roomMakePasswordInput.value,
-			description: roomMakeDescriptionInput.value
-		};
-		sessionStorage.setItem('room', JSON.stringify(roomInfo));
+events.addListener('OnUserLogin', () => {
+	//close the login
+	document.querySelector('.Join').style.display = 'none';
+	//open the signup page
+	document.querySelector('.Rooms').style.display = 'block';
+	//populate teh rooms list
+	OnRoomsList(user.recentRooms, user.myRooms);
+});
+events.addListener('OnUserSignup', () => {
+	//close the login
+	document.querySelector('.Join').style.display = 'none';
+	//open the signup page
+	document.querySelector('.Rooms').style.display = 'block';
+});
 
-		//load 
-		window.location.href = '/chat.html';
-	} else {
-		console.log('Make room failure: ' + info);
-		alert(info);
-	}
-}
-function OnJoinRoomResult({ success, info }) {
-	if (success) {
-		console.log('Join room success');
-		//save to sessionStorage
-		var room = Object.assign({
-			name: roomJoinNameInput.value,
-			password: roomJoinPasswordInput.value,
-		}, info);
-		sessionStorage.setItem('room', JSON.stringify(room));
 
-		//load 
-		window.location.href = '/chat.html';
-	} else {
-		console.log('Join room failure: ' + info);
-		alert(info);
-	}
-}
-function OnQuickJoinRoomResult({ success, info }) {
-	if (success) {
-		//save to sessionStorage
-		var data = Object.assign({
-			name: quickJoinRoomName
-		}, info);
-		sessionStorage.setItem('room', JSON.stringify(data));
-
-		//load 
-		window.location.href = '/chat.html';
-	} else {
-		alert(info); //name is msg if error
-	}
-}
-function OnRoomsResult({ recentRooms, myRooms }) {
+function OnRoomsList(recentRooms, myRooms) {
 	console.log('recent rooms: ' + recentRooms.length + ', my rooms: ' + myRooms.length);
 	for (var i = 0; i < recentRooms.length; i++) {
 		const room = recentRooms[i];
 		const onClick = function () {
-			socket.emit('quick join room attempt', room.name);
+			QuickJoinRoom(room.name);
 		};
-		//displayRoom(parentTo, roomName, roomDescription, roomLastAccessed)
-		displayRoom(recentRoomsDiv, room.name, room.description, room.lastAccessed, onClick);
+		displayRoom(recentRoomsDiv, room, onClick);
 	}
 	for (var i = 0; i < myRooms.length; i++) {
+		console.log('room is ');
+
 		const room = myRooms[i];
 		const onClick = function () {
-			socket.emit('quick join room attempt', room.name);
+			QuickJoinRoom(room.name);
 		};
-		//displayRoom(parentTo, roomName, roomDescription, roomLastAccessed)
-		displayRoom(myRoomsDiv, room.name, room.description, room.ownerLastAccessed, onClick);
+
+		console.log(room);
+		displayRoom(myRoomsDiv, room, onClick);
 	}
 }
-
-
-
+function QuickJoinRoom(roomname) {
+	socket.emit('quick join room', roomname);
+	socket.on('quick join room', (success, info) => {
+		if (success) {
+			room = Object.assign({ name: roomname }, info);
+			events.fireEvent('OnJoinRoom');
+		} else {
+			console.log('quick join error: ' + info);
+		}
+	});
+}
 function makeRoom() {
-	// socket.emit('make room attempt', roomMakeNameInput.value, roomMakePassinput.value, roomMakeDescinput.value);
-	const data = {
-		roomname: roomMakeNameInput.value,
-		roompass: roomMakePasswordInput.value,
-		roomdesc: roomMakeDescriptionInput.value,
-		username: user.name,
-		userpass: user.password
-	};
-	const options = {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json'
-		},
-		body: JSON.stringify(data)
-	};
-	fetch('/newroom', options)
-		.then(response => response.json())
-		.then(OnMakeRoomResult)
-		.catch(err => console.error(`Login error: ${err}`));
+	socket.emit('make room', roomMakeNameInput.value, roomMakePasswordInput.value, roomMakeDescriptionInput.value);
+	socket.on('make room', (success, info) => {
+		if (success) {
+			console.log('Make room success');
+			//save to sessionStorage
+			room = {
+				name: roomMakeNameInput.value,
+				password: roomMakePasswordInput.value,
+				description: roomMakeDescriptionInput.value
+			};
 
+			events.fireEvent('OnJoinRoom');
+		} else {
+			console.log('Make room failure: ' + info);
+			alert(info);
+		}
+		socket.off('make room');
+	})
 }
 function joinRoom() {
-	// socket.emit('join room attempt', roomJoinNameInput.value, roomJoinPasswordInput.value);
-	const data = {
-		roomname: roomJoinNameInput.value,
-		roompass: roomJoinPasswordInput.value,
-	};
-	const options = {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json'
-		},
-		body: JSON.stringify(data)
-	};
-	fetch('/joinroom', options)
-		.then(response => response.json())
-		.then(OnJoinRoomResult)
-		.catch(err => console.error(`Login error: ${err}`));
+	socket.emit('join room', roomJoinNameInput.value, roomJoinPasswordInput.value);
+	socket.on('join room', (success, info) => {
+		if (success) {
+			console.log('Join room success');
+			//save to sessionStorage
+			room = Object.assign({
+				name: roomJoinNameInput.value,
+				password: roomJoinPasswordInput.value,
+			}, info);
+			events.fireEvent('OnJoinRoom');
+		} else {
+			console.log('Join room failure: ' + info);
+			alert(info);
+		}
+	});
 }
 function quickJoinRoom(room) {
-	//socket.emit('quick join room attempt', room._id);
-	const data = {
-		roomname: room.name,
-	};
-	quickJoinRoomName = room.name;
-	const options = {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json'
-		},
-		body: JSON.stringify(data)
-	};
-	fetch('/quickjoinroom', options)
-		.then(response => response.json())
-		.then(OnQuickJoinRoomResult)
-		.catch(err => console.error(`Login error: ${err}`));
-
+	socket.emit('quick join room', room._id);
+	socket.on('quick join room', (success, info) => {
+		if (success) {
+			//save to sessionStorage
+			room = Object.assign({
+				name: quickJoinRoomName
+			}, info);
+			events.fireEvent('OnJoinRoom');
+		} else {
+			alert(info); //name is msg if error
+		}
+	});
 }
 

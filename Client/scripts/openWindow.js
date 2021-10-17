@@ -1,8 +1,6 @@
-var prevCoverSettings;
-const coverEle = document.querySelector('.Cover');
-var currentWindow;
-
-function openWindow(windowEle) {
+var currentWindow, prevCoverSettings, coverEle
+function openWindow(windowEle, coverClass) {
+	coverEle = document.querySelector(coverClass);
 	currentWindow = windowEle;
 	console.log('opening');
 	prevCoverSettings = coverEle.style;

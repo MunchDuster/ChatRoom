@@ -1,5 +1,3 @@
-const messagesBox = document.querySelector(".MessageBox");
-
 var user = {};
 
 
