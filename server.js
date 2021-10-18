@@ -88,8 +88,7 @@ async function socketListeners() {
 			} else {
 				//import user from database data
 				user = importUser(users[0]);
-				//log to console
-				console.log(`${user.name} logged in.`);
+
 
 				//get user recent rooms
 				var recentRoomsIds = user.recentRoomIds;
@@ -108,6 +107,8 @@ async function socketListeners() {
 					var room = rooms[i];
 					myRooms.push({ name: room.name, date: room.ownerLastAccessed, description: room.description })
 				}
+				//log to console
+				console.log(`${user.name} logged in. ${myRooms.length} owned rooms and ${recentRooms.length} recent rooms.`);
 
 				//tell client: success
 				socket.emit('login', true, { recentRooms: recentRooms, myRooms: myRooms });
@@ -166,7 +167,7 @@ async function socketListeners() {
 				//log to console
 				console.log('join room attempt success');
 				//get first room
-				room = await importRoom(rooms[0]);
+				room = importRoom(rooms[0]);
 				//tell client: success
 				var roomInfo = {
 					description: room.description,
@@ -192,7 +193,7 @@ async function socketListeners() {
 				//log to console
 				console.log('quick join room attempt success');
 				//get first room
-				room = rooms[0];
+				room = importRoom(rooms[0]);
 				//tell client: success
 				var roomInfo = {
 					password: room.password,
