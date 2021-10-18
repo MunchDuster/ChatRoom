@@ -11,7 +11,7 @@ const roomJoinPasswordInput = document.getElementById('roomPass');
 
 
 
-events.addListener('OnUserLogin', () => {
+pageEvents.addListener('OnUserLogin', () => {
 	//close the login
 	document.querySelector('.Join').style.display = 'none';
 	//open the signup page
@@ -19,7 +19,7 @@ events.addListener('OnUserLogin', () => {
 	//populate teh rooms list
 	OnRoomsList(user.recentRooms, user.myRooms);
 });
-events.addListener('OnUserSignup', () => {
+pageEvents.addListener('OnUserSignup', () => {
 	//close the login
 	document.querySelector('.Join').style.display = 'none';
 	//open the signup page
@@ -53,7 +53,7 @@ function QuickJoinRoom(roomname) {
 	socket.on('quick join room', (success, info) => {
 		if (success) {
 			room = Object.assign({ name: roomname }, info);
-			events.fireEvent('OnJoinRoom');
+			pageEvents.fireEvent('OnJoinRoom');
 		} else {
 			console.log('quick join error: ' + info);
 		}
@@ -71,7 +71,7 @@ function makeRoom() {
 				description: roomMakeDescriptionInput.value
 			};
 
-			events.fireEvent('OnJoinRoom');
+			pageEvents.fireEvent('OnJoinRoom');
 		} else {
 			console.log('Make room failure: ' + info);
 			alert(info);
@@ -89,11 +89,12 @@ function joinRoom() {
 				name: roomJoinNameInput.value,
 				password: roomJoinPasswordInput.value,
 			}, info);
-			events.fireEvent('OnJoinRoom');
+			pageEvents.fireEvent('OnJoinRoom');
 		} else {
 			console.log('Join room failure: ' + info);
 			alert(info);
 		}
+		socket.off('join room');
 	});
 }
 function quickJoinRoom(room) {
@@ -104,7 +105,7 @@ function quickJoinRoom(room) {
 			room = Object.assign({
 				name: quickJoinRoomName
 			}, info);
-			events.fireEvent('OnJoinRoom');
+			pageEvents.fireEvent('OnJoinRoom');
 		} else {
 			alert(info); //name is msg if error
 		}

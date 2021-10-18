@@ -70,7 +70,7 @@ async function socketListeners() {
 
 	//Handle socket.io connections
 	io.on('connection', (socket) => {
-		var user, room, verified = false;
+		var user, room;
 
 
 		socket.on('login', async (username, userpass) => {
@@ -147,7 +147,9 @@ async function socketListeners() {
 				socket.emit('make room', false, 'Room with name already exits already exists.');
 			} else {
 				//import room from database data
-				room = await makeRoom(roomCollection, roomname, roompass, roomdesc, user._id);
+				room = await makeRoom(roomCollection, roomname, roompass, roomdesc, user._id).catch(err => {
+					console.log('make room error: ' + err);
+				});
 				//log to console
 				console.log(room.name + ' has been created.');
 				//tell client: success
@@ -164,7 +166,7 @@ async function socketListeners() {
 				//log to console
 				console.log('join room attempt success');
 				//get first room
-				room = rooms[0];
+				room = await importRoom(rooms[0]);
 				//tell client: success
 				var roomInfo = {
 					description: room.description,
@@ -206,8 +208,6 @@ async function socketListeners() {
 			}
 		});
 		socket.on('chat msg', async (text) => {
-			if (!verified) { return; }
-
 			var msg = await room.addMessage(messageCollection, text, user).catch(err => {
 				console.error(`Error in chat message: ${err}`);
 			});
@@ -216,11 +216,14 @@ async function socketListeners() {
 			socket.to(room.name).emit('chat msg', msg);
 		});
 		socket.on('disconnect', async function () {
-			if (!verified) { return; }
+			if (user == null) return;
 
 			console.log(`${user.name} disconnected.`);
 			//remove this socket from user sockets
 			user.sockets.splice(user.sockets.indexOf(socket), 1);
+
+
+			if (room == null) return;
 			//remove user from room
 			room.removeUser(messageCollection, user);
 		});

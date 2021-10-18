@@ -11,7 +11,7 @@ function login() {
 			user = Object.assign(nameAndPass, data);
 			console.log('setting user as');
 			console.log(user);
-			events.fireEvent('OnUserLogin');
+			pageEvents.fireEvent('OnUserLogin');
 		} else {
 			console.log('login fail');
 			//something failed, probably incorrect password or username
@@ -32,7 +32,7 @@ function signup() {
 				recentRooms: [],
 				myRooms: []
 			};
-			events.fireEvent('OnUserSignup');
+			pageEvents.fireEvent('OnUserSignup');
 		} else {
 
 			console.log('signup fail');

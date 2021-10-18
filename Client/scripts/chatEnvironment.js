@@ -6,7 +6,7 @@ function setSizeOfMessageBox(ele) {
 	ele.height = window.innerHeight - 170;
 }
 
-events.addListener('OnJoinRoom', () => {
+pageEvents.addListener('OnJoinRoom', () => {
 	//display the room title
 	title.innerText = room.name;
 

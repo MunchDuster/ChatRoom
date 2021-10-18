@@ -1,4 +1,4 @@
-var events = {
+var pageEvents = {
 	'OnJoinRoom': {
 		callbacks: [],
 		getParameters: function () {
@@ -19,7 +19,7 @@ var events = {
 	},
 
 	fireEvent: function (eventName) {
-		var event = events[eventName];
+		var event = pageEvents[eventName];
 		if (event == null) {
 			console.log(`cannot call event ${eventName}, because it does not exist.`);
 			return;
@@ -32,7 +32,7 @@ var events = {
 
 	},
 	addListener: function (eventName, listener) {
-		var event = events[eventName];
+		var event = pageEvents[eventName];
 		if (event == null) {
 			console.log(`cannot call event ${eventName}, because it does not exist.`);
 			return;

@@ -5,7 +5,7 @@ const messagesBox = document.querySelector(".MessagesBox");
 
 
 
-events.addListener('OnJoinRoom', () => {
+pageEvents.addListener('OnJoinRoom', () => {
 	document.querySelector('.Rooms').style.display = 'none';
 	document.querySelector('.Chat').style.display = 'block';
 });
