@@ -29,6 +29,7 @@
 		<script src="scripts/startsocket.js"></script>
 		<script src="scripts/displayChat.js"></script>
 		<script src="scripts/getRelativeTime.js"></script>
+		<script src="scripts/reconnect.js"></script>
 
 	<head>
 	<body>
@@ -110,9 +111,9 @@
 			<h1>Some Room</h1>
 			<div class="RoomDescription">Description</div>
 			<div class="Side">Password</div>
-			<div class="MessagesBox"></div>
+			<div class="MessagesBox Section"></div>
 			<div class="Footer Section">
-				<textarea class="InputText" oninput="autoResize();"></textarea>
+				<textarea class="InputText" oninput="autoResize();" onload="autoResize();" placeholder="write your message here"></textarea>
 				<button onclick="sendMessage();" class="SendButton">Send</button>
 			</div>
 

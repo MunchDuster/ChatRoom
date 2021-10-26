@@ -14,7 +14,12 @@ h1 {
 .ChatMessage {
   /*background-color: #8152ad;*/
   padding: 5px;
-  width: 100%;
+}
+
+.InputText::placeholder {
+  border-color: teal;
+  color: purple;
+  font-style: italic;
 }
 
 .Footer {

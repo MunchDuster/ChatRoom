@@ -90,8 +90,10 @@ function makeRoomObj(name, pass, desc, ownerId) {
 
 				date: getDate(),
 				type: MessageType.USER_MESSAGE,
-				roomId: this._id
+				roomId: this._id.toString()
 			}
+			console.log('new message roomID');
+			console.log(messageObj.roomId);
 
 			var returnedVal = await messageCollection.insertOne(messageObj).catch(err => {
 				console.error(`Error in room.addMessage updating message collection:\n${err}\nmessageObj:`);
@@ -110,8 +112,15 @@ function makeRoomObj(name, pass, desc, ownerId) {
 			}
 			return -1;
 		},
-		loadMessages: function (messagesCollection) {
-			return messagesCollection.find({ room_id: this._id }).toArray();
+		loadMessages: async function (messagesCollection) {
+			console.log("this is is");
+			console.log(this._id);
+			var allmessages = await messagesCollection.find({ roomId: this._id.toString() }).toArray();
+			for (var i = 0; i < allmessages.length; i++) {
+				console.log(`Messages ${i}.roomId = ${allmessages[i].roomId}`);
+				console.log(allmessages[i].roomId.toString());
+			}
+			return allmessages;
 		},
 		getTopMessages: async function (messagesCollection, length) {
 			var allMessagesinRoom = await messagesCollection.find({ roomId: this._id, type: 4 });

@@ -18,6 +18,7 @@ const { findUserByName, findUserByNameOnly, findUserById, makeUser, removeUser, 
 const { MongoClient } = require('mongodb');
 const uri = "mongodb+srv://themrduder:mememan@cluster0.sm7hr.mongodb.net/Database01?retryWrites=true&w=majority";
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+var ObjectId = require('mongodb').ObjectID;
 
 //Database collections
 var userCollection;
@@ -43,9 +44,9 @@ async function OnMongoClientConnected(err) {
 	messageCollection = client.db("Database01").collection("Logs");
 
 	// Clear database
-	// messageCollection.deleteMany({});
-	// userCollection.deleteMany({});
-	// roomCollection.deleteMany({});
+	messageCollection.deleteMany({});
+	userCollection.deleteMany({});
+	roomCollection.deleteMany({});
 
 	postListeners();
 	socketListeners();
@@ -129,6 +130,8 @@ async function socketListeners() {
 				user = await makeUser(userCollection, username, userpass);
 				//log to console
 				console.log(username + ' signed up.');
+
+
 				//tell client: success
 				socket.emit('signup', true);
 			}
@@ -153,6 +156,9 @@ async function socketListeners() {
 				});
 				//log to console
 				console.log(room.name + ' has been created.');
+
+				socket.join(room.name);
+
 				//tell client: success
 				socket.emit('make room', true);
 			}
@@ -168,11 +174,16 @@ async function socketListeners() {
 				console.log('join room attempt success');
 				//get first room
 				room = importRoom(rooms[0]);
+
+				//get all teh room messages of user type
+				var messages = await room.loadMessages(messageCollection);//Array.from(loadMessages.find({ type: MessageType.USER_MESSAGE, roomId: room._id }));
 				//tell client: success
 				var roomInfo = {
 					description: room.description,
-					ownerId: room.ownerId
+					ownerId: room.ownerId,
+					messages: messages,
 				};
+				socket.join(room.name);
 				socket.emit('join room', true, roomInfo);
 			} else {
 
@@ -192,14 +203,24 @@ async function socketListeners() {
 			if (rooms.length > 0) {
 				//log to console
 				console.log('quick join room attempt success');
+
+				//tell client: success
+
 				//get first room
 				room = importRoom(rooms[0]);
+
+				//get all teh room messages of user type
+				var messages = await room.loadMessages(messageCollection);//Array.from(loadMessages.find({ type: MessageType.USER_MESSAGE, roomId: room._id }));
+
 				//tell client: success
 				var roomInfo = {
 					password: room.password,
 					description: room.description,
-					ownerId: room.ownerId
+					ownerId: room.ownerId,
+					messages: messages,
 				};
+				socket.join(room.name);
+
 				socket.emit('quick join room', true, roomInfo);
 			} else {
 

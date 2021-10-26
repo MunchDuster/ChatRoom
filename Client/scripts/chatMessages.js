@@ -2,12 +2,23 @@ const textInput = document.querySelector(".InputText");
 const sendButton = document.querySelector(".SendButton");
 const messagesBox = document.querySelector(".MessagesBox");
 
-
+setSizeOfMessageBox(textInput);
 
 
 pageEvents.addListener('OnJoinRoom', () => {
 	document.querySelector('.Rooms').style.display = 'none';
 	document.querySelector('.Chat').style.display = 'block';
+
+	//display previous messages
+	if (room.messages) {
+		//display recieved messages
+		for (var i = 0; i < room.messages.length; i++) {
+			displayUserMessage(room.messages[i].sender, userIcon, room.messages[i].date, room.messages[i].message);
+		}
+
+		//scroll to bottom
+		messagesBox.scrollTo(0, messagesBox.scrollHeight);
+	}
 });
 
 
@@ -17,6 +28,7 @@ pageEvents.addListener('OnJoinRoom', () => {
 
 //Resize the input box
 function autoResize() {
+	console.log('resizing');
 	textInput.style.height = '0px';
 	textInput.style.height = (textInput.scrollHeight) + 'px';
 	sendButton.style.height = (textInput.scrollHeight) + 'px';
@@ -27,7 +39,6 @@ function autoResize() {
 	window.scrollTo(0, document.body.scrollHeight);
 }
 window.addEventListener('resize', autoResize);
-autoResize();
 
 
 //Temporary until user icons are sorted.
@@ -36,23 +47,6 @@ var userIcon = 'images/mememan.png';
 //socket handlers and listeners
 
 
-socket.on('chat log', (success, messages) => {
-	if (!success) {
-		alert('unable to get chat log.');
-		return;
-	}
-
-	//log recieved meessages
-	console.log(`recieving messages: ${messages.length}.`);
-
-	//display recieved messages
-	for (var i = 0; i < messages.length; i++) {
-		displayUserMessage(messages[i].sender, userIcon, messages[i].date, messages[i].message);
-	}
-
-	//scroll to bottom
-	messagesBox.scrollTo(0, messagesBox.scrollHeight);
-});
 socket.on('chat msg', (message) => {
 	//log to console
 	console.log('recieved message');
